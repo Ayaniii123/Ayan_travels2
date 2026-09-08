@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://Ayaniii123.github.io/Ayan_travels2/sitemap.xml
