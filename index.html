@@ -439,6 +439,13 @@
   .tab{display:flex;flex-direction:column;align-items:center;gap:4px;color:#B4BDB2;font-size:11px;font-weight:700;}
   .tab.active{color:var(--forest);}
   .tab svg{width:22px;height:22px;}
+  .tab-book{cursor:pointer;color:#007F6D;}
+  .tab-book-circle{
+    width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,#00A896,#007F6D);color:#fff;margin-top:-26px;
+    box-shadow:0 10px 22px rgba(0,168,150,.4);border:4px solid #fff;
+  }
+  .tab-book-circle svg{width:20px;height:20px;}
 
   /* ---------- attraction photo viewer ---------- */
   .photo-overlay{display:none;position:fixed;inset:0;background:rgba(8,18,15,.82);z-index:1200;align-items:center;justify-content:center;padding:18px;}
@@ -516,7 +523,9 @@ body{
   background:linear-gradient(135deg,#00A896,#007F6D);box-shadow:0 10px 22px rgba(0,168,150,.25);
 }
 .auth-btn.secondary{background:#fff;color:#007F6D;border:1.5px solid #bfe4dc;box-shadow:none;}
-.auth-msg{text-align:center;font-size:12px;min-height:17px;color:#c43d3d;font-weight:700;}
+.auth-msg{text-align:center;font-size:12.5px;min-height:17px;color:#c43d3d;font-weight:800;}
+.auth-msg:not(:empty){background:#fdecec;border:1.5px solid #f3b8b8;border-radius:12px;padding:10px 12px;margin-top:4px;line-height:1.4;}
+.auth-msg.info:not(:empty){background:#eaf4fb;border-color:#bfe0f2;color:#1c5c82;}
 .auth-note{text-align:center;font-size:10.5px;color:#8b9993;margin-top:13px;line-height:1.45;}
 .auth-switch{text-align:center;margin-top:14px;font-size:12px;color:#6f817a;}
 .auth-switch button{border:0;background:none;color:#007F6D;font-weight:900;cursor:pointer;}
@@ -578,6 +587,34 @@ body{
   .booking-success p{font-size:13px;color:#6D7B73;line-height:1.6;}
   .booking-email-note{font-size:11px;color:#7C8A80;margin-top:8px;text-align:center;}
   @media(max-width:560px){.booking-grid{grid-template-columns:1fr;}.booking-field.full{grid-column:auto;}}
+  .hotel-search-card{width:560px;}
+  .hotel-search-input{
+    width:100%;box-sizing:border-box;padding:13px 15px;margin:4px 0 12px;border:1.5px solid #dce8e2;
+    border-radius:14px;background:#f9fcfa;font:inherit;outline:none;
+  }
+  .hotel-search-input:focus{border-color:#00A896;box-shadow:0 0 0 4px rgba(0,168,150,.10);}
+  .hotel-search-chips{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+  .hotel-search-chips .chip{
+    border:1.5px solid #dce8e2;background:#fff;color:#31554b;border-radius:999px;padding:7px 14px;
+    font-size:12px;font-weight:800;cursor:pointer;
+  }
+  .hotel-search-chips .chip.active{background:#007F6D;border-color:#007F6D;color:#fff;}
+  .hotel-search-results{max-height:52vh;overflow-y:auto;display:flex;flex-direction:column;gap:10px;}
+  .hotel-result{
+    display:flex;gap:12px;align-items:center;padding:10px;border:1.5px solid #eef2ee;border-radius:16px;
+    cursor:pointer;transition:.15s ease;
+  }
+  .hotel-result:hover{border-color:#bfe4dc;background:#f7fbf9;}
+  .hotel-result img{width:64px;height:64px;border-radius:12px;object-fit:cover;flex:0 0 auto;}
+  .hotel-result-info{flex:1;min-width:0;}
+  .hotel-result-info .hr-name{font-weight:900;color:var(--deep);font-size:13.5px;}
+  .hotel-result-info .hr-meta{font-size:11.5px;color:#7C8A80;margin-top:2px;}
+  .hotel-result-info .hr-price{font-size:12px;font-weight:800;color:#007F6D;margin-top:3px;}
+  .hotel-result-book{
+    border:0;border-radius:12px;padding:9px 13px;background:linear-gradient(135deg,#F4A261,#E76F51);
+    color:#fff;font-weight:900;font-size:11.5px;cursor:pointer;flex:0 0 auto;white-space:nowrap;
+  }
+  .hotel-search-empty{text-align:center;color:#93A099;font-size:12.5px;padding:24px 10px;}
 
   .settings-overlay{display:none;position:fixed;inset:0;background:rgba(8,18,15,.72);z-index:2200;align-items:center;justify-content:center;padding:18px;}
   .settings-overlay.show{display:flex;}
@@ -847,6 +884,20 @@ body{
   </div>
 </div>
 
+<div class="booking-overlay" id="hotelSearchOverlay">
+  <div class="booking-card hotel-search-card">
+    <div class="booking-head"><h3>🔎 Find & book a hotel</h3><button class="booking-close" id="hotelSearchClose" type="button">×</button></div>
+    <input class="hotel-search-input" id="hotelSearchInput" type="text" placeholder="Search hotel name, destination or type (e.g. Kalam, Luxury)…" autocomplete="off">
+    <div class="hotel-search-chips" id="hotelSearchChips">
+      <button type="button" class="chip active" data-tier="all">All</button>
+      <button type="button" class="chip" data-tier="luxury">Luxury</button>
+      <button type="button" class="chip" data-tier="mid-range">Mid-range</button>
+      <button type="button" class="chip" data-tier="budget">Budget</button>
+    </div>
+    <div class="hotel-search-results" id="hotelSearchResults"></div>
+  </div>
+</div>
+
 <div class="settings-overlay" id="settingsOverlay">
   <div class="settings-card">
     <div class="settings-head"><h3>⚙️ Travel Settings</h3><button class="settings-close" id="settingsClose" type="button">×</button></div>
@@ -882,6 +933,12 @@ body{
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 20l-6-3V4l6 3 6-3 6 3v13l-6-3-6 3z"/></svg>
     Map
   </div>
+  <div class="tab tab-book" id="tabBook">
+    <div class="tab-book-circle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+    </div>
+    Book
+  </div>
   <div class="tab" id="tabProfile">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
     Profile
@@ -900,14 +957,17 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebas
 import { getAuth,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut,updateProfile } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 import { getDatabase,ref,update,serverTimestamp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 const firebaseConfig={apiKey:"AIzaSyCCwiXXw-kt-cq2jEZvF3JVUCVB4cDFD98",authDomain:"ayan-travels-c5315.firebaseapp.com",databaseURL:"https://ayan-travels-c5315-default-rtdb.firebaseio.com",projectId:"ayan-travels-c5315",storageBucket:"ayan-travels-c5315.firebasestorage.app",messagingSenderId:"782258872249",appId:"1:782258872249:web:01cb253282701c89e56068",measurementId:"G-VCQRX7D89V"};
-window.ayanFirebase={ready:false};
-try{const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getDatabase(app);window.ayanFirebase={ready:true,auth,db,ref,update,serverTimestamp,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut,updateProfile};window.dispatchEvent(new Event('ayanFirebaseReady'));}catch(e){console.error(e);window.dispatchEvent(new Event('ayanFirebaseReady'));}
+window.ayanFirebase={ready:false,error:null};
+try{const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getDatabase(app);window.ayanFirebase={ready:true,auth,db,ref,update,serverTimestamp,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut,updateProfile};window.dispatchEvent(new Event('ayanFirebaseReady'));}catch(e){console.error('[Ayan Travels] Firebase failed to initialize:',e);window.ayanFirebase={ready:false,error:(e&&e.message)?e.message:String(e)};window.dispatchEvent(new Event('ayanFirebaseReady'));}
 </script>
 <script>
+window.addEventListener('error', function(e){ console.error('[Ayan Travels] Uncaught error:', e.message, 'at', e.filename+':'+e.lineno); });
+window.addEventListener('unhandledrejection', function(e){ console.error('[Ayan Travels] Unhandled promise rejection:', e.reason); });
 
 
   /* ---------- editable profile ---------- */
   (function(){
+   try{
     var modal=document.getElementById('profileEditModal'),edit=document.getElementById('editProfileBtn'),cancel=document.getElementById('cancelProfileEdit'),save=document.getElementById('saveProfileEdit'),contact=document.getElementById('contactUsBtn'),contactBox=document.getElementById('profileContact');
     var photoInput=document.getElementById('profilePhotoInput'),nameInput=document.getElementById('profileNameInput'),bioInput=document.getElementById('profileBioInput'),detailsInput=document.getElementById('profileDetailsInput');
     function getData(){try{return JSON.parse(localStorage.getItem('ayanProfileData')||'{}')}catch(e){return {}}}
@@ -917,9 +977,12 @@ try{const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getDatabase(app
     edit.addEventListener('click',open);cancel.addEventListener('click',function(){modal.classList.remove('show')});modal.addEventListener('click',function(e){if(e.target===modal)modal.classList.remove('show')});contact.addEventListener('click',function(){contactBox.classList.toggle('show')});
     save.addEventListener('click',function(){var d=getData();d.name=nameInput.value.trim()||'Ayan traveller';d.bio=bioInput.value.trim()||'Discover Pakistan, one beautiful journey at a time';d.details=detailsInput.value.trim();var file=photoInput.files&&photoInput.files[0];if(file){if(file.size>5*1024*1024){alert('Please choose a picture smaller than 5 MB.');return;}var r=new FileReader();r.onload=function(){d.photo=r.result;localStorage.setItem('ayanProfileData',JSON.stringify(d));render();modal.classList.remove('show');};r.readAsDataURL(file);}else{localStorage.setItem('ayanProfileData',JSON.stringify(d));render();modal.classList.remove('show');}});
     render();
+   }catch(err){ console.error('[Ayan Travels] editable-profile setup failed (non-fatal):', err); }
   })();
 
   /* ---------- room booking ---------- */
+  (function(){
+   try{
   var bookingOverlay=document.getElementById('bookingOverlay'), bookingSummary=document.getElementById('bookingSummary'), bookingSuccess=document.getElementById('bookingSuccess'), bookingFormArea=document.getElementById('bookingFormArea');
   var activeBooking={place:null,hotel:null};
   function openBooking(place,hotel){
@@ -952,9 +1015,13 @@ try{const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getDatabase(app
     var subject=encodeURIComponent('New Ayan Travels Hotel Booking - '+hotel.name), body=encodeURIComponent('New room booking\n\nName: '+name+'\nEmail: '+email+'\nHotel: '+hotel.name+'\nDestination: '+place.name+'\nGuests: '+guests+' persons\nCheck-in: '+ci+'\nCheck-out: '+co+'\nPayment: '+payment+'\nPrice: PKR '+price+' per night');
     bookingFormArea.style.display='none'; bookingSuccess.style.display='block'; bookingSuccess.innerHTML='<div class="check">✅</div><h4>Your room is booked!</h4><p>Your room at <b>'+hotel.name+'</b> has been booked successfully.<br><strong>Have a safe journey! ✈️</strong></p><button class="booking-confirm" type="button" onclick="window.location.href=\'mailto:ayankhan4780@gmail.com?subject='+subject+'&body='+body+'\'">📧 Email booking details</button><div class="booking-email-note">A direct email can only be sent automatically after an email service/SMTP is connected. This button opens your email app with the complete booking prepared for <b>ayankhan4780@gmail.com</b>.</div>';
   });
+  window.openBooking = openBooking;
+   }catch(err){ console.error('[Ayan Travels] room-booking setup failed (non-fatal):', err); }
+  })();
 
   /* ---------- travel settings ---------- */
   (function(){
+   try{
     var overlay=document.getElementById('settingsOverlay');
     var btn=document.getElementById('settingsBtn');
     var close=document.getElementById('settingsClose');
@@ -967,23 +1034,85 @@ try{const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getDatabase(app
     close.addEventListener('click',function(){overlay.classList.remove('show');});
     overlay.addEventListener('click',function(e){if(e.target===overlay)overlay.classList.remove('show');});
     save.addEventListener('click',function(){var data={};ids.forEach(function(id){data[id]=document.getElementById(id).value;}); privacyIds.forEach(function(id){data[id]=document.getElementById(id).checked;});localStorage.setItem('ayanTravelSettings',JSON.stringify(data));save.textContent='✓ Settings Saved';setTimeout(function(){save.textContent='✓ Save Settings';overlay.classList.remove('show');},700);});
+   }catch(err){ console.error('[Ayan Travels] travel-settings setup failed (non-fatal):', err); }
   })();
 
 /* ---------- Firebase authentication ---------- */
   (function(){
+   try{
     var authGate=document.getElementById('authGate'), createModal=document.getElementById('createModal'), loginForm=document.getElementById('loginForm'), createForm=document.getElementById('createForm'), loginMsg=document.getElementById('loginMsg'), createMsg=document.getElementById('createMsg'), accountPill=document.getElementById('accountPill'), accountEmail=document.getElementById('accountEmail');
-    function setMsg(el,msg,error){if(el){el.textContent=msg;el.style.color=error?'#c43d3d':'#007F6D';}}
+    function setMsg(el,msg,error){if(el){el.textContent=msg;el.classList.toggle('info',!error);console.log('[AyanAuth]',error?'ERROR:':'info:',msg);}}
     function showCreate(){createModal.classList.add('show');setMsg(createMsg,'',false);}
     function hideCreate(){createModal.classList.remove('show');createForm.reset();}
     function setLoggedIn(user){authGate.style.display='none';accountPill.classList.add('show');var name=user.displayName||(user.email||'').split('@')[0]||'Traveller';accountEmail.textContent=name;var pn=document.getElementById('profileName');if(pn)pn.textContent=name;var av=document.querySelector('.profile-avatar');if(av)av.textContent=name.charAt(0).toUpperCase();}
     document.getElementById('openCreate').addEventListener('click',showCreate);
     document.getElementById('closeCreate').addEventListener('click',hideCreate);
     createModal.addEventListener('click',function(e){if(e.target===createModal)hideCreate();});
-    function waitForFirebase(){if(window.ayanFirebase&&window.ayanFirebase.ready)return Promise.resolve(window.ayanFirebase);return new Promise(function(resolve,reject){var done=false;function ready(){if(done)return;done=true;resolve(window.ayanFirebase);}window.addEventListener('ayanFirebaseReady',ready,{once:true});setTimeout(function(){if(!done){done=true;reject(new Error('Firebase failed to initialize.'));}},10000);});}
-    createForm.addEventListener('submit',async function(e){e.preventDefault();setMsg(createMsg,'Creating account…',false);var name=document.getElementById('createName').value.trim(),email=document.getElementById('createEmail').value.trim().toLowerCase(),p1=document.getElementById('createPassword').value,p2=document.getElementById('createPassword2').value;if(p1!==p2){setMsg(createMsg,'Passwords do not match.',true);return;}try{var fb=await waitForFirebase(),cred=await fb.createUserWithEmailAndPassword(fb.auth,email,p1);await fb.updateProfile(cred.user,{displayName:name});try{await fb.update(fb.ref(fb.db,'users/'+cred.user.uid),{name:name,email:email,createdAt:fb.serverTimestamp()});}catch(x){}setLoggedIn(cred.user);hideCreate();}catch(err){var msg='Could not create account.';if(err.code==='auth/email-already-in-use')msg='This email is already registered. Please login.';else if(err.code==='auth/weak-password')msg='Password must be at least 6 characters.';else if(err.code==='auth/invalid-email')msg='Please enter a valid email address.';else if(err.message)msg=err.message;setMsg(createMsg,msg,true);}});
-    loginForm.addEventListener('submit',async function(e){e.preventDefault();setMsg(loginMsg,'Signing you in…',false);var email=document.getElementById('loginEmail').value.trim().toLowerCase(),password=document.getElementById('loginPassword').value;try{var fb=await waitForFirebase(),cred=await fb.signInWithEmailAndPassword(fb.auth,email,password);setLoggedIn(cred.user);}catch(err){var msg='Login failed.';if(err.code==='auth/invalid-credential'||err.code==='auth/wrong-password'||err.code==='auth/user-not-found')msg='Incorrect email or password.';else if(err.code==='auth/invalid-email')msg='Please enter a valid email address.';else if(err.message)msg=err.message;setMsg(loginMsg,msg,true);}});
+    function waitForFirebase(){if(window.ayanFirebase&&window.ayanFirebase.ready)return Promise.resolve(window.ayanFirebase);if(window.ayanFirebase&&window.ayanFirebase.error)return Promise.reject(new Error(window.ayanFirebase.error));return new Promise(function(resolve,reject){var done=false;function ready(){if(done)return;done=true;if(window.ayanFirebase&&window.ayanFirebase.ready)resolve(window.ayanFirebase);else reject(new Error((window.ayanFirebase&&window.ayanFirebase.error)||'Firebase did not respond in time — check your internet connection.'));}window.addEventListener('ayanFirebaseReady',ready,{once:true});setTimeout(function(){if(!done){done=true;reject(new Error('Firebase did not respond in time (10s) — this usually means the SDK request to gstatic.com was blocked (ad blocker / network / firewall) or the page has no internet access.'));}},10000);});}
+    createForm.addEventListener('submit',async function(e){
+      e.preventDefault();
+      console.log('[AyanAuth] create-account form submitted');
+      var name=document.getElementById('createName').value.trim(),email=document.getElementById('createEmail').value.trim().toLowerCase(),p1=document.getElementById('createPassword').value,p2=document.getElementById('createPassword2').value;
+      if(!name){ setMsg(createMsg,'Please enter your name.',true); return; }
+      if(!email || email.indexOf('@')===-1){ setMsg(createMsg,'Please enter a valid email address.',true); return; }
+      if(!p1 || p1.length<6){ setMsg(createMsg,'Password must be at least 6 characters.',true); return; }
+      if(p1!==p2){setMsg(createMsg,'Passwords do not match.',true);return;}
+      setMsg(createMsg,'Creating account…',false);
+      try{
+        console.log('[AyanAuth] waiting for firebase…');
+        var fb=await waitForFirebase();
+        console.log('[AyanAuth] firebase ready, calling createUserWithEmailAndPassword');
+        var cred=await fb.createUserWithEmailAndPassword(fb.auth,email,p1);
+        console.log('[AyanAuth] account created, uid:',cred.user.uid);
+        try{await fb.updateProfile(cred.user,{displayName:name});}catch(px){console.warn('[AyanAuth] updateProfile failed (non-fatal):',px);}
+        try{await fb.update(fb.ref(fb.db,'users/'+cred.user.uid),{name:name,email:email,createdAt:fb.serverTimestamp()});}catch(x){console.warn('[AyanAuth] saving user profile to database failed (non-fatal):',x);}
+        setLoggedIn(cred.user);hideCreate();
+        console.log('[AyanAuth] auth gate hidden, app should now be visible');
+      }catch(err){
+        console.error('[AyanAuth] create account failed:',err);
+        var msg='Could not create account.';
+        if(err.code==='auth/email-already-in-use')msg='This email is already registered. Please login instead.';
+        else if(err.code==='auth/weak-password')msg='Password must be at least 6 characters.';
+        else if(err.code==='auth/invalid-email')msg='Please enter a valid email address.';
+        else if(err.code==='auth/unauthorized-domain')msg='This website\'s domain is not authorized in Firebase yet. (Firebase Console → Authentication → Settings → Authorized domains)';
+        else if(err.code==='auth/operation-not-allowed')msg='Email/Password sign-in is turned off in Firebase. (Firebase Console → Authentication → Sign-in method)';
+        else if(err.message)msg=err.message;
+        setMsg(createMsg,msg,true);
+      }
+    });
+    loginForm.addEventListener('submit',async function(e){
+      e.preventDefault();
+      console.log('[AyanAuth] login form submitted');
+      var email=document.getElementById('loginEmail').value.trim().toLowerCase(),password=document.getElementById('loginPassword').value;
+      if(!email || email.indexOf('@')===-1){ setMsg(loginMsg,'Please enter a valid email address.',true); return; }
+      if(!password || password.length<6){ setMsg(loginMsg,'Password must be at least 6 characters.',true); return; }
+      setMsg(loginMsg,'Signing you in…',false);
+      try{
+        console.log('[AyanAuth] waiting for firebase…');
+        var fb=await waitForFirebase();
+        console.log('[AyanAuth] firebase ready, calling signInWithEmailAndPassword');
+        var cred=await fb.signInWithEmailAndPassword(fb.auth,email,password);
+        console.log('[AyanAuth] sign-in success, uid:',cred.user.uid);
+        setLoggedIn(cred.user);
+        console.log('[AyanAuth] auth gate hidden, app should now be visible');
+      }catch(err){
+        console.error('[AyanAuth] login failed:',err);
+        var msg='Login failed.';
+        if(err.code==='auth/invalid-credential'||err.code==='auth/wrong-password'||err.code==='auth/user-not-found')msg='Incorrect email or password. If you have not created an account yet, tap "Create account" below.';
+        else if(err.code==='auth/invalid-email')msg='Please enter a valid email address.';
+        else if(err.code==='auth/unauthorized-domain')msg='This website\'s domain is not authorized in Firebase yet. (Firebase Console → Authentication → Settings → Authorized domains)';
+        else if(err.code==='auth/operation-not-allowed')msg='Email/Password sign-in is turned off in Firebase. (Firebase Console → Authentication → Sign-in method)';
+        else if(err.message)msg=err.message;
+        setMsg(loginMsg,msg,true);
+      }
+    });
     document.getElementById('logoutBtn').addEventListener('click',async function(){try{var fb=await waitForFirebase();await fb.signOut(fb.auth);}catch(e){}accountPill.classList.remove('show');authGate.style.display='flex';loginForm.reset();});
-    waitForFirebase().then(function(fb){fb.onAuthStateChanged(fb.auth,function(user){if(user)setLoggedIn(user);else{authGate.style.display='flex';accountPill.classList.remove('show');}});}).catch(function(err){setMsg(loginMsg,'Firebase is not available. Check your connection and Firebase settings.',true);});
+    waitForFirebase().then(function(fb){fb.onAuthStateChanged(fb.auth,function(user){if(user)setLoggedIn(user);else{authGate.style.display='flex';accountPill.classList.remove('show');}});}).catch(function(err){setMsg(loginMsg,'Firebase error: '+(err&&err.message?err.message:'could not connect.')+' (See console for details, or check Firebase Authorized Domains.)',true);});
+   }catch(err){
+    console.error('[Ayan Travels] Firebase auth UI setup failed — the login form may not respond:', err);
+    var gate=document.getElementById('authGate');
+    if(gate) gate.insertAdjacentHTML('afterbegin','<div style="background:#fdecec;border:1.5px solid #f3b8b8;color:#c43d3d;font-weight:800;font-size:12.5px;padding:10px 14px;border-radius:12px;margin-bottom:12px;">⚠️ Setup error: '+(err&&err.message?err.message:'unknown error')+' — open the browser console (F12) for details.</div>');
+   }
   })();
 
   var destinations = [
@@ -1255,396 +1384,18 @@ try{const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getDatabase(app
     'Malam Jabba ski resort':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Malam%20Jabba%2CSwat%2CKhyber%20Pakhtunkhwa.jpg',
     'Malam Jabba':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Malam%20Jabba%2CSwat%2CKhyber%20Pakhtunkhwa.jpg',
     'Bala Hisar Fort':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Bala%20Hisar%20Fort.jpg',
-    'Hunza Valley':'https://commons.wikimedia.org/wiki/Special:Redirect/file/A%20view%20of%20Hunza%20Valley.jpg'
+    'Hunza Valley':'https://commons.wikimedia.org/wiki/Special:Redirect/file/A%20view%20of%20Hunza%20Valley.jpg',
+    'Mahodand Lake':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Mahodand%20Lake%2C%20Swat%2C%20Pakistan.jpg',
+    'Deosai Plains':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Deosai%20National%20Park%2C%20Skardu.jpg',
+    'Skardu Fort (Kharpocho)':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Kharpocho%20Fort%2C%20Skardu.jpg',
+    'Margalla Hills trails':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Margalla%20Hills%2C%20Islamabad%2C%20Pakistan.jpg',
+    'Kalash Valleys (Bumburet, Rumbur)':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Bumburet%20Valley%20-%20Kalash.jpg',
+    'Qissa Khwani Bazaar':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Qissa%20Khwani%20Bazaar%2C%20Peshawar%2C%20Pakistan%20-%20panoramio.jpg',
+    'Mall Road':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Mall%20Road%2C%20Murree.jpg'
   };
 
   // Fallback photo per destination/region, used when a specific attraction has no dedicated photo.
   var regionPhotos = {
     'Lahore':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Badshahi%20Masjid%2C%20the%20Royal%20Mosque%20in%20Lahore%2C%20Pakistan.jpg',
     'Islamabad':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Faisal%20Mosque%2C%20Islamabad%2C%20Pakistan.jpg',
-    'Naran Kaghan':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Lake%20Saif-ul-malook%20Pakistan.jpg',
-    'Swat (Mingora)':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Malam%20Jabba%2CSwat%2CKhyber%20Pakhtunkhwa.jpg',
-    'Peshawar':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Bala%20Hisar%20Fort.jpg',
-    'Hunza':'https://commons.wikimedia.org/wiki/Special:Redirect/file/A%20view%20of%20Hunza%20Valley.jpg',
-    'Kalam':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Ushu%20Forest%2C%20Kalam%2C%20Swat%2C%20Pakistan.jpg',
-    'Swat valley':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Ushu%20Forest%2C%20Kalam%2C%20Swat%2C%20Pakistan.jpg',
-    'Chitral':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Tirich%20Mir.jpg',
-    'Hindukush':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Tirich%20Mir.jpg',
-    'Kashmir':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Neelum%20Valley%2C%20Kashmir.jpg',
-    'Skardu':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Shangrila%20Resort%2C%20Skardu.jpg',
-    'Murree':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Murree%2C%20Kashmir%20Point.jpg'
-  };
-
-  function lookupPlacePhoto(placeName, regionName, destName, fallbackId){
-    return attractionPhotos[placeName] || regionPhotos[regionName] || regionPhotos[destName] || placePhotos[fallbackId];
-  }
-
-  var placePhotos = {
-    kalam:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=85',
-    naran:'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=85',
-    chitral:'https://images.unsplash.com/photo-1464278533981-50106e6176b1?auto=format&fit=crop&w=900&q=85',
-    swat:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=85',
-    kashmir:'https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=900&q=85',
-    lahore:'https://images.unsplash.com/photo-1565299507177-b0ac66763828?auto=format&fit=crop&w=900&q=85',
-    peshawar:'https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=900&q=85',
-    islamabad:'https://images.unsplash.com/photo-1609947017136-9daf32a5eb16?auto=format&fit=crop&w=900&q=85',
-    murree:'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=900&q=85',
-    skardu:'https://images.unsplash.com/photo-1530789253388-582c481c54b0?auto=format&fit=crop&w=900&q=85'
-  };
-
-  var grid = document.getElementById('destGrid');
-  destinations.forEach(function(d){
-    var card = document.createElement('div');
-    card.className = 'dest-card';
-    card.dataset.id = d.id;
-    var photo = placePhotos[d.id];
-    card.innerHTML =
-      '<div class="swatch ' + d.css + '">' +
-        '<img src="' + photo + '" alt="' + d.name + '" loading="lazy">' +
-        '<div class="check">&#10003;</div>' +
-      '</div>' +
-      '<div class="meta"><p class="name">' + d.name + '</p><p class="sub">' + d.region + '</p></div>';
-    card.addEventListener('click', function(){ openDetail(d.id); });
-    grid.appendChild(card);
-  });
-
-  var destinationMenu = document.getElementById('destinationMenu');
-  destinations.forEach(function(d){
-    var b = document.createElement('button');
-    b.type = 'button';
-    b.textContent = d.name;
-    b.addEventListener('click', function(){ selectDestination(d.id); openDetail(d.id); destinationMenu.classList.remove('show'); });
-    destinationMenu.appendChild(b);
-  });
-  document.getElementById('destinationMenuBtn').addEventListener('click', function(){ destinationMenu.classList.toggle('show'); });
-
-  function selectDestination(id){
-    selected = destinations.find(function(d){ return d.id === id; });
-    document.querySelectorAll('.dest-card').forEach(function(c){
-      c.classList.toggle('selected', c.dataset.id === id);
-    });
-    document.getElementById('selCount').textContent = selected ? selected.name + ' selected' : '0 selected';
-    resetRouteUI();
-  }
-
-  /* ---------- detail modal ---------- */
-  var detailOverlay = document.getElementById('detailOverlay');
-
-  function openDetail(id){
-    var d = destinations.find(function(x){ return x.id === id; });
-    if(!d) return;
-
-    detailOverlay.dataset.currentId = d.id;
-    var swatchEl = document.getElementById('detailSwatch');
-    swatchEl.className = 'detail-swatch';
-    swatchEl.innerHTML = '<img src="' + placePhotos[d.id] + '" alt="' + d.name + '" loading="eager">' +
-      '<button class="detail-close" id="detailClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>' +
-      '<div class="detail-icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="' + d.icon + '"/></svg></div>' +
-      '<div class="detail-titles"><h2 id="detailName">' + d.name + '</h2><p id="detailRegion">' + d.region + '</p></div>';
-    document.getElementById('detailClose').addEventListener('click', closeDetail);
-
-    document.getElementById('detailDesc').textContent = d.desc;
-
-    var attList = document.getElementById('detailAttractions');
-    attList.innerHTML = '';
-    d.attractions.forEach(function(a){
-      var li = document.createElement('li');
-      li.className = 'clickable-attraction';
-      li.title = 'Click to view photo';
-      var thumbSrc = lookupPlacePhoto(a, d.region, d.name, d.id);
-      li.innerHTML = '<div class="att-thumb"><img src="' + thumbSrc + '" alt="' + a + '" loading="lazy" referrerpolicy="no-referrer"></div><span>' + a + '</span><span class="photo-hint">📷</span>';
-      li.addEventListener('click', function(){ openPlacePhoto(a, d.region); });
-      attList.appendChild(li);
-    });
-
-    var hotelList = document.getElementById('detailHotels');
-    hotelList.innerHTML = '';
-    d.hotels.forEach(function(h){
-      var row = document.createElement('div');
-      row.className = 'hotel-row';
-      row.innerHTML =
-        '<div class="hotel-icon"><img src="' + (h.image || placePhotos[d.id]) + '" alt="' + h.name + '" referrerpolicy="no-referrer"></div>' +
-        '<div class="hotel-text"><p class="hn">' + h.name + '</p><p class="ht">' + h.type + ' · From PKR ' + h.prices[2].toLocaleString() + '/night</p></div>' +
-        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" style="color:#B4BDB2;flex:0 0 auto;"><path d="M9 6l6 6-6 6"/></svg>';
-      row.addEventListener('click', function(){ openHotel(d, h); });
-      hotelList.appendChild(row);
-    });
-
-    detailOverlay.classList.add('show');
-  }
-
-  function closeDetail(){
-    detailOverlay.classList.remove('show');
-  }
-
-  detailOverlay.addEventListener('click', function(e){
-    if(e.target === detailOverlay) closeDetail();
-  });
-
-
-  /* ---------- famous place photo viewer ---------- */
-  var photoOverlay = document.getElementById('photoOverlay');
-  var photoImage = document.getElementById('photoImage');
-  var photoTitle = document.getElementById('photoTitle');
-
-  function openPlacePhoto(placeName, regionName){
-    photoTitle.textContent = placeName;
-    photoImage.alt = placeName + ' in ' + regionName;
-    photoOverlay.classList.add('show');
-
-    // Real photographs from Wikimedia Commons, looked up from the shared
-    // attractionPhotos / regionPhotos maps defined above (also used for the
-    // inline thumbnails in the "Famous places to see" list).
-    var detailName = document.getElementById('detailName').textContent;
-    var currentId = detailOverlay.dataset.currentId;
-    var src = lookupPlacePhoto(placeName, regionName, detailName, currentId);
-    if(!src){
-      // Keep the viewer usable even when an attraction has no mapped photo yet.
-      photoImage.removeAttribute('src');
-      photoImage.alt = 'Real photo for ' + placeName + ' is not mapped yet.';
-      return;
-    }
-    photoImage.onerror = function(){
-      photoImage.onerror = null;
-      photoImage.removeAttribute('src');
-      photoImage.alt = 'The real photo could not be loaded. Please check your internet connection.';
-    };
-    photoImage.src = src;
-  }
-  function closePlacePhoto(){ photoOverlay.classList.remove('show'); photoImage.src=''; }
-  document.getElementById('photoClose').addEventListener('click', closePlacePhoto);
-  photoOverlay.addEventListener('click', function(e){ if(e.target === photoOverlay) closePlacePhoto(); });
-
-  /* ---------- hotel modal ---------- */
-  var hotelOverlay = document.getElementById('hotelOverlay');
-
-  function openHotel(place, hotel){
-    var swatchEl = document.getElementById('hotelSwatch');
-    var hotelImage = hotel.image || placePhotos[place.id];
-    swatchEl.innerHTML = '<img src="' + hotelImage + '" alt="' + hotel.name + '" loading="eager" referrerpolicy="no-referrer">' +
-      '<button class="detail-close" id="hotelClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>' +
-      '<div class="detail-titles"><h2>' + hotel.name + '</h2><p>' + hotel.type + '</p></div>';
-    document.getElementById('hotelClose').addEventListener('click', closeHotel);
-    document.getElementById('hotelDesc').textContent =
-      'Located in ' + place.name + ', ' + place.region + '. A convenient base for visiting ' + place.attractions[0] + ' and nearby sights.';
-
-    var amenitiesList = hotel.amenities || ['Hot & cold water 24/7', 'Free WiFi', 'Attached bathroom'];
-    var checkIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
-    var dropIcon = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2c-4 5-7 9-7 13a7 7 0 0 0 14 0c0-4-3-8-7-13z"/></svg>';
-    document.getElementById('hotelAmenities').innerHTML = amenitiesList.map(function(a){
-      var isWater = a.toLowerCase().indexOf('water') !== -1;
-      return '<div class="amenity-item' + (isWater ? ' water' : '') + '">' + (isWater ? dropIcon : checkIcon) + '<span>' + a + '</span></div>';
-    }).join('');
-
-    document.getElementById('hotelPricing').innerHTML =
-      '<div class="hotel-price"><span class="people">2 PERSONS</span><span class="amount">PKR ' + hotel.prices[2].toLocaleString() + '</span></div>' +
-      '<div class="hotel-price"><span class="people">3 PERSONS</span><span class="amount">PKR ' + hotel.prices[3].toLocaleString() + '</span></div>' +
-      '<div class="hotel-price"><span class="people">5 PERSONS</span><span class="amount">PKR ' + hotel.prices[5].toLocaleString() + '</span></div>';
-
-    document.getElementById('hotelBookBtn').onclick = function(){ openBooking(place, hotel); };
-
-    document.getElementById('hotelGoBtn').onclick = function(){
-      selectDestination(place.id);
-      closeHotel();
-      closeDetail();
-      document.getElementById('routeBtn').scrollIntoView({ behavior:'smooth', block:'center' });
-    };
-    hotelOverlay.classList.add('show');
-  }
-
-  function closeHotel(){
-    hotelOverlay.classList.remove('show');
-  }
-
-  hotelOverlay.addEventListener('click', function(e){
-    if(e.target === hotelOverlay) closeHotel();
-  });
-
-  document.getElementById('detailRouteBtn').addEventListener('click', function(){
-    var id = detailOverlay.dataset.currentId;
-    selectDestination(id);
-    closeDetail();
-    document.getElementById('routeBtn').scrollIntoView({ behavior:'smooth', block:'center' });
-  });
-
-  function resetRouteUI(){
-    document.getElementById('statusCard').classList.remove('show','error');
-    document.getElementById('statsRow').classList.remove('show');
-    document.getElementById('map').classList.remove('show');
-    document.getElementById('arrivedBanner').classList.remove('show');
-  }
-
-  function haversine(lat1, lon1, lat2, lon2){
-    var R = 6371;
-    var dLat = (lat2-lat1) * Math.PI/180;
-    var dLon = (lon2-lon1) * Math.PI/180;
-    var a = Math.sin(dLat/2)*Math.sin(dLat/2) +
-            Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*
-            Math.sin(dLon/2)*Math.sin(dLon/2);
-    var c = 2*Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    return R*c;
-  }
-
-  document.getElementById('routeBtn').addEventListener('click', function(){
-    if(!selected){
-      alert('Pick a destination first, then tap this button.');
-      return;
-    }
-    resetRouteUI();
-    var statusCard = document.getElementById('statusCard');
-    var statusText = document.getElementById('statusText');
-    var spinner = document.getElementById('statusSpinner');
-    statusCard.classList.add('show');
-    spinner.style.display = 'block';
-    statusText.textContent = 'Locating you…';
-
-    if(typeof L === 'undefined'){
-      showError('Map library failed to load. Check your internet connection and reload the page.');
-      return;
-    }
-    if(!navigator.geolocation){
-      showError('Location is not supported on this device.');
-      return;
-    }
-    if(window.isSecureContext === false){
-      showError('Your browser is blocking location on this page. Open the file through a web server (or https) rather than double-clicking it, then try again.');
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(function(pos){
-      var uLat = pos.coords.latitude, uLng = pos.coords.longitude;
-      statusText.textContent = 'Point found. Building your route…';
-      buildRoute(uLat, uLng, selected);
-    }, function(err){
-      var msg = 'Could not access your location. Please allow location access and try again.';
-      if(err && err.code === 1) msg = 'Location permission was denied. Enable it for this page in your browser settings, then try again.';
-      if(err && err.code === 3) msg = 'Location request timed out. Check your GPS/network and try again.';
-      showError(msg);
-    }, { enableHighAccuracy:true, timeout:12000 });
-  });
-
-  function showError(msg){
-    var statusCard = document.getElementById('statusCard');
-    document.getElementById('statusSpinner').style.display = 'none';
-    document.getElementById('statusText').textContent = msg;
-    statusCard.classList.add('show','error');
-  }
-
-  function buildRoute(uLat, uLng, dest){
-    var mapEl = document.getElementById('map');
-    mapEl.classList.add('show');
-
-    if(!map){
-      map = L.map('map', { zoomControl:false });
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution:'&copy; OpenStreetMap contributors',
-        maxZoom:18
-      }).addTo(map);
-    }
-
-    if(userMarker) map.removeLayer(userMarker);
-    if(destMarker) map.removeLayer(destMarker);
-    if(routeLine) map.removeLayer(routeLine);
-
-    var userIcon = L.divIcon({
-      className:'', html:'<div style="width:16px;height:16px;border-radius:50%;background:#3E7CB1;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.3);"></div>',
-      iconSize:[16,16], iconAnchor:[8,8]
-    });
-    var destIcon = L.divIcon({
-      className:'', html:'<div style="width:16px;height:16px;border-radius:50%;background:#B96F26;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.3);"></div>',
-      iconSize:[16,16], iconAnchor:[8,8]
-    });
-
-    userMarker = L.marker([uLat, uLng], {icon:userIcon}).addTo(map).bindPopup('You are here');
-    destMarker = L.marker([dest.lat, dest.lng], {icon:destIcon}).addTo(map).bindPopup(dest.name);
-
-    var straightKm = haversine(uLat, uLng, dest.lat, dest.lng);
-
-    fetch('https://router.project-osrm.org/route/v1/driving/' + uLng + ',' + uLat + ';' + dest.lng + ',' + dest.lat + '?overview=full&geometries=geojson')
-      .then(function(r){ return r.json(); })
-      .then(function(data){
-        if(data.routes && data.routes.length){
-          var coords = data.routes[0].geometry.coordinates.map(function(c){ return [c[1], c[0]]; });
-          routeLine = L.polyline(coords, { color:'#B96F26', weight:5, opacity:0.85 }).addTo(map);
-          map.fitBounds(routeLine.getBounds(), { padding:[24,24] });
-          finishRoute(data.routes[0].distance/1000, data.routes[0].duration/3600, dest, uLat, uLng);
-        } else {
-          throw new Error('no route');
-        }
-      })
-      .catch(function(){
-        routeLine = L.polyline([[uLat,uLng],[dest.lat,dest.lng]], { color:'#B96F26', weight:4, opacity:0.8, dashArray:'8 8' }).addTo(map);
-        map.fitBounds(routeLine.getBounds(), { padding:[24,24] });
-        finishRoute(straightKm, straightKm/60, dest, uLat, uLng);
-      });
-  }
-
-  function showNavigationControls(uLat, uLng, dest){
-    lastUserCoords = {lat:uLat, lng:uLng};
-    document.getElementById('navControls').classList.add('show');
-    document.getElementById('navLive').classList.remove('show');
-    document.getElementById('startNavBtn').onclick = function(){
-      if(!navigator.geolocation){ alert('Live navigation is not supported on this device.'); return; }
-      document.getElementById('navLive').classList.add('show');
-      document.getElementById('startNavBtn').textContent = '⏹ Stop Journey';
-      document.getElementById('startNavBtn').onclick = stopNavigation;
-      if(navWatchId !== null) navigator.geolocation.clearWatch(navWatchId);
-      navWatchId = navigator.geolocation.watchPosition(function(pos){
-        lastUserCoords = {lat:pos.coords.latitude, lng:pos.coords.longitude};
-        if(userMarker) userMarker.setLatLng([pos.coords.latitude,pos.coords.longitude]);
-        if(map) map.panTo([pos.coords.latitude,pos.coords.longitude], {animate:true, duration:0.5});
-        var remaining = haversine(pos.coords.latitude,pos.coords.longitude,dest.lat,dest.lng);
-        document.getElementById('navLive').textContent = remaining < 0.15
-          ? '🏁 You have arrived at ' + dest.name + '! Have a safe journey!'
-          : '📍 You are moving towards ' + dest.name + ' · about ' + Math.round(remaining) + ' km remaining';
-      }, function(){
-        document.getElementById('navLive').textContent = '⚠️ Live location stopped. Please allow location access to continue navigation.';
-      }, {enableHighAccuracy:true, maximumAge:3000, timeout:10000});
-    };
-    document.getElementById('googleNavBtn').onclick = function(){
-      var origin = lastUserCoords ? (lastUserCoords.lat + ',' + lastUserCoords.lng) : '';
-      var url = 'https://www.google.com/maps/dir/?api=1' +
-        (origin ? '&origin=' + encodeURIComponent(origin) : '') +
-        '&destination=' + encodeURIComponent(dest.lat + ',' + dest.lng) + '&travelmode=driving';
-      window.open(url, '_blank');
-    };
-  }
-
-  function stopNavigation(){
-    if(navWatchId !== null && navigator.geolocation){
-      navigator.geolocation.clearWatch(navWatchId);
-      navWatchId = null;
-    }
-    document.getElementById('navLive').classList.remove('show');
-    var btn=document.getElementById('startNavBtn');
-    btn.textContent='▶ Start Journey';
-    btn.onclick=function(){
-      var d=selected;
-      if(d && lastUserCoords) showNavigationControls(lastUserCoords.lat,lastUserCoords.lng,d);
-      btn.click();
-    };
-  }
-
-  function finishRoute(km, hours, dest, uLat, uLng){
-    document.getElementById('statusCard').classList.remove('show');
-    document.getElementById('statDist').textContent = Math.round(km) + ' km';
-    var h = Math.floor(hours);
-    var m = Math.round((hours - h) * 60);
-    document.getElementById('statTime').textContent = (h > 0 ? h + 'h ' : '') + m + 'm';
-    document.getElementById('statsRow').classList.add('show');
-    showNavigationControls(uLat, uLng, dest);
-
-    var banner = document.getElementById('arrivedBanner');
-    document.getElementById('arrivedTitle').textContent = 'Route mapped to ' + dest.name;
-    document.getElementById('arrivedText').textContent = 'Follow this road route from your current point to reach ' + dest.name + ', ' + dest.region + '.';
-    banner.classList.add('show');
-
-    routeCount += 1;
-    document.getElementById('pLastDist').textContent = 'Last route: ' + Math.round(km) + ' km to ' + dest.name;
-    updateProfilePanel();
-
-    setTimeout(function(){ if(map) map.invalidateSize(); }, 60);
-  }
-</script>
-</body>
-</html>
+    'Na
