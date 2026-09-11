@@ -186,6 +186,45 @@
   .c9{background:linear-gradient(135deg,#2D6A4F,#16302A);}
   .c10{background:linear-gradient(135deg,#3E7F6B,#1C4536);}
 
+
+  /* ---------- monetization-ready travel services ---------- */
+  .business-section{margin:26px 0 12px}
+  .business-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-bottom:12px}
+  .business-head h2{font-family:'Fraunces',serif;font-size:22px;color:var(--deep);margin:0}
+  .business-head p{font-size:11px;color:#7C8A80;margin:3px 0 0}
+  .service-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .service-card{background:#fff;border-radius:18px;padding:16px;box-shadow:var(--shadow-soft);border:1px solid #e8efe9}
+  .service-icon{font-size:28px;margin-bottom:7px}
+  .service-card h3{margin:0 0 5px;color:var(--deep);font-size:15px}
+  .service-card p{margin:0 0 11px;font-size:11px;line-height:1.45;color:#718078}
+  .service-btn{width:100%;border:0;border-radius:11px;padding:10px;background:var(--forest);color:#fff;font-weight:900;font-size:11px;cursor:pointer}
+  .service-btn.alt{background:#F4A261}
+  .package-list,.rental-list{display:grid;gap:9px}
+
+  .quick-price{background:#f7fbf8;border:1px solid #dfeae3;border-radius:13px;padding:11px 12px;margin:10px 0 12px;color:#52645b;font-size:11px;line-height:1.9;}
+  .quick-price strong{color:#007F6D;font-weight:900;}
+  body.dark-mode .quick-price{background:#142b25;border-color:#35534a;color:#b9c9c2;}
+  body.dark-mode .quick-price strong{color:#70d9c5;}
+  .package-item,.rental-item{display:flex;align-items:center;gap:10px;padding:11px;background:#f8fbf9;border:1px solid #e2ece6;border-radius:13px;cursor:pointer}
+  .package-item:active,.rental-item:active{transform:scale(.99)}
+  .package-item .emoji,.rental-item .emoji{font-size:23px}
+  .package-info{flex:1;min-width:0}
+  .package-info b{display:block;color:var(--deep);font-size:12.5px}
+  .package-info small{display:block;color:#7c8a80;font-size:10.5px;margin-top:2px}
+  .package-price{font-size:11px;font-weight:900;color:#007F6D;white-space:nowrap}
+  .service-modal{display:none;position:fixed;inset:0;background:rgba(8,18,15,.72);z-index:2400;align-items:center;justify-content:center;padding:14px}
+  .service-modal.show{display:flex}
+  .service-box{width:520px;max-width:100%;max-height:92vh;overflow:auto;background:#fff;border-radius:22px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+  .service-box h3{font-family:'Fraunces',serif;color:var(--deep);font-size:22px;margin:0 0 5px}
+  .service-box>p{font-size:12px;color:#718078;margin:0 0 14px;line-height:1.5}
+  .service-form label{display:block;font-size:11px;font-weight:900;color:#52635A;margin:8px 0 4px}
+  .service-form input,.service-form select,.service-form textarea{width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid #dce7de;border-radius:10px;font:inherit;color:var(--deep);background:#fbfdfb}
+  .service-actions{display:flex;gap:8px;margin-top:14px}
+  .service-actions button{flex:1;border:0;border-radius:11px;padding:11px;font-weight:900;cursor:pointer}
+  .service-cancel{background:#eef3ef;color:#425149}.service-submit{background:var(--forest);color:#fff}
+  .lead-note{margin-top:10px;background:#fff8e8;border:1px solid #f2dfb4;border-radius:11px;padding:10px;font-size:10.5px;color:#725b29;line-height:1.45}
+  @media(max-width:520px){.service-grid{grid-template-columns:1fr 1fr}.business-head h2{font-size:20px}}
+
   /* ---------- CTA ---------- */
   .cta-primary{
     width:100%;border:none;border-radius:18px;padding:17px 20px;
@@ -810,6 +849,113 @@ body{
 
   .support-note{font-size:12px;line-height:1.55;color:#68766e;margin:8px 0}.review-form{display:grid;gap:9px}.review-form .profile-input{box-sizing:border-box;width:100%;}.review-item{padding:10px 0;border-top:1px solid #e5ece7}.review-item:first-child{border-top:0}.review-stars{letter-spacing:1px}.booking-history-item{padding:10px;border:1px solid #e2ebe4;border-radius:12px;margin:8px 0;background:#fbfdfb;font-size:12px;line-height:1.55}.admin-booking-item{padding:10px;border:1px solid #e2ebe4;border-radius:12px;margin:8px 0;font-size:12px;line-height:1.55}.payment-note{font-size:11px;color:#607067;margin-top:6px;line-height:1.45}.dark .support-note,.dark .payment-note{color:#aebbb3}.dark .booking-history-item,.dark .admin-booking-item{background:#17221d;border-color:#2b3b32}
 </style>
+
+<style id="ayan-v5-admin-css">
+.admin-btn{margin-top:8px;width:100%;border:0;border-radius:12px;padding:11px 16px;background:#17483d;color:#fff;font-weight:900;cursor:pointer;font-size:12px}.admin-overlay{display:none;position:fixed;inset:0;background:rgba(8,18,15,.78);z-index:5000;align-items:center;justify-content:center;padding:14px}.admin-overlay.show{display:flex}.admin-box{width:760px;max-width:100%;max-height:92vh;overflow:auto;background:#fff;border-radius:24px;padding:20px;box-shadow:0 25px 80px rgba(0,0,0,.4)}.admin-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}.admin-head h3{margin:0;color:#17483d;font-family:'Fraunces',serif;font-size:24px}.admin-close{border:0;border-radius:50%;width:36px;height:36px;background:#eef5f1;font-size:22px;cursor:pointer}.admin-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}.admin-stat{background:#f3f8f5;border-radius:15px;padding:13px}.admin-stat b{display:block;font-size:21px;color:#17483d}.admin-stat span{font-size:10px;color:#6c7c75;font-weight:800}.admin-card{border:1px solid #e4ece8;border-radius:16px;padding:13px;margin:10px 0;background:#fff}.admin-card h4{margin:0 0 7px;color:#17483d}.admin-row{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}.admin-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.admin-actions button{border:0;border-radius:9px;padding:8px 10px;font-weight:800;cursor:pointer}.approve{background:#dff5e8;color:#17633c}.reject{background:#ffe4e4;color:#9b2226}.assign{background:#e4efff;color:#185a9d}.admin-muted{font-size:11px;color:#71817a;line-height:1.5}.admin-table{width:100%;border-collapse:collapse;font-size:11px}.admin-table th,.admin-table td{padding:8px;border-bottom:1px solid #e8efec;text-align:left;vertical-align:top}.admin-table th{color:#17483d}.admin-input{padding:9px;border:1px solid #d7e3dd;border-radius:9px;width:100%;box-sizing:border-box}.admin-form{display:grid;grid-template-columns:1fr 1fr;gap:8px}.admin-form .full{grid-column:1/-1}.driver-status{font-size:10px;font-weight:900;padding:4px 7px;border-radius:999px;background:#e6f6eb;color:#17633c}.driver-status.busy{background:#fff0d9;color:#9a5a00}@media(max-width:620px){.admin-grid{grid-template-columns:repeat(2,1fr)}.admin-form{grid-template-columns:1fr}.admin-form .full{grid-column:auto}.admin-table{font-size:10px}}
+</style>
+
+<style id="ayan-mobile-layout-fix">
+/* Final responsive layout fix: keep the whole app full-width on phones. */
+html, body {
+  width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+}
+body {
+  display: block;
+  margin: 0;
+  padding: 0 0 40px;
+}
+.app {
+  width: 100%;
+  max-width: 1100px;
+  min-width: 0;
+  margin: 0 auto;
+}
+.hero,
+.content,
+.business-section,
+.dest-grid,
+.section-title {
+  max-width: 100%;
+}
+.dest-grid {
+  width: 100%;
+}
+@media (max-width: 850px) {
+  .app {
+    width: 100vw;
+    max-width: 100vw;
+    margin: 0;
+  }
+  .hero {
+    width: 100%;
+  }
+  .content {
+    width: 100%;
+    padding: 20px 16px;
+  }
+  .dest-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .service-grid {
+    grid-template-columns: 1fr;
+  }
+  .section-title {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .section-title > div {
+    min-width: 0;
+  }
+}
+@media (max-width: 520px) {
+  .app {
+    width: 100vw;
+  }
+  .hero {
+    height: 280px;
+  }
+  .hero-caption h1 {
+    font-size: 30px;
+  }
+}
+</style>
+
+
+<style id="ayan-final-layout-fix">
+/* Keep the app at its intended phone width; do not stretch it on larger browser viewports. */
+html,body{width:100%;min-width:0;overflow-x:hidden;}
+body{display:flex;justify-content:center;margin:0;padding:0 0 40px;}
+.app{width:430px;max-width:100%;min-width:0;margin:0 auto;}
+.home-view,.view.active{width:100%;min-width:0;}
+.hero{width:100%;height:260px;}
+.content{width:100%;min-width:0;}
+.hint{margin:8px 0 10px;line-height:1.35;}
+#homePaymentWrap{margin:10px 0 10px !important;}
+#homePaymentWrap button{max-width:100%;}
+@media(max-width:430px){
+  .app{width:100vw;max-width:100vw;}
+  .content{padding-left:16px;padding-right:16px;}
+  .hero{height:260px;}
+}
+</style>
+
+<style id="ayan-verified-responsive-fix">
+html,body{width:100%;max-width:100%;margin:0;padding:0;overflow-x:hidden;}
+body{display:block;}
+.app{width:100%;max-width:1100px;min-width:0;margin:0 auto;box-sizing:border-box;}
+.home-view,.view,.view.active,.hero,.content{width:100%;max-width:100%;min-width:0;box-sizing:border-box;}
+.hero{overflow:hidden;}
+img,svg{max-width:100%;}
+@media (max-width:520px){.app{width:100%;max-width:100%;margin:0;}.content{padding-left:16px!important;padding-right:16px!important;}.hero{height:280px;}.dest-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}.service-grid{grid-template-columns:1fr;}}
+</style>
+
+<style id="dashboard-tab-fix">
+#tabDashboard{cursor:pointer;}
+#tabDashboard svg{width:22px;height:22px;}
+</style>
 </head>
 <body>
 
@@ -890,10 +1036,66 @@ body{
 
     <div class="dest-grid" id="destGrid"></div>
 
+
+    <section class="business-section" id="travelServices">
+      <div class="business-head">
+        <div><h2>Plan your trip with Ayan Travels</h2><p>Hotels • Tours • Transport — all in one place</p></div>
+      </div>
+      <div class="service-grid">
+        <div class="service-card">
+          <div class="service-icon">🧳</div><h3>Tour Packages</h3>
+          <p>Ready-made Pakistan trips with destination, itinerary and starting price shown clearly.</p>
+          <div class="quick-price">🏔️ Skardu — <strong>PKR 28,500/person</strong><br>🏔️ Hunza — <strong>PKR 26,500/person</strong><br>🌲 Swat & Kalam — <strong>PKR 19,500/person</strong><br>🏞️ Naran Kaghan — <strong>PKR 20,500/person</strong><br>💚 Kashmir — <strong>PKR 22,500/person</strong></div>
+          <button class="service-btn" id="openPackages" type="button">View Full Packages & Itinerary</button><a class="service-btn" style="display:inline-block;text-align:center;text-decoration:none;background:#25D366;color:#fff;margin-top:8px" href="https://wa.me/923484780615?text=Assalam-o-Alaikum%20Ayan%20Travels%2C%20I%20want%20to%20book%20a%20tour%20package." target="_blank" rel="noopener">💬 WhatsApp to Book</a>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🚙</div><h3>Car & Jeep Rental</h3>
+          <p>See vehicle type, passenger capacity and daily starting price before requesting.</p>
+          <div class="quick-price">🚗 Small Car — <strong>PKR 4,500/day</strong><br>🚙 Large Car — <strong>PKR 6,500/day</strong><br>🚘 SUV / 4×4 — <strong>PKR 9,500/day</strong><br>🏔️ Jeep — <strong>PKR 8,500/day</strong></div>
+          <button class="service-btn alt" id="openRentals" type="button">View Vehicles & Details</button><a class="service-btn" style="display:inline-block;text-align:center;text-decoration:none;background:#25D366;color:#fff;margin-top:8px" href="https://wa.me/923484780615?text=Assalam-o-Alaikum%20Ayan%20Travels%2C%20I%20want%20to%20book%20a%20vehicle." target="_blank" rel="noopener">💬 WhatsApp Driver/Booking</a>
+        </div>
+      </div>
+    </section>
+    <section class="business-section" aria-label="Travel services information">
+      <div class="service-card" style="background:linear-gradient(135deg,#f2fbf6,#fff9ed);">
+        <h3>💰 Best-value travel planning</h3>
+        <p>Compare hotel options, plan routes and request tours or transport. Final prices and availability are confirmed before payment.</p>
+      </div>
+    </section>
+
     <button class="cta-primary" id="routeBtn">
       <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 21c-4-4-7-7.5-7-11a7 7 0 0 1 14 0c0 3.5-3 7-7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>
       Find my location and get route
     </button>
+<div id="homePaymentWrap" style="margin:12px 0 14px;">
+  <button id="homePaymentsBookingBtn" type="button"
+    style="width:100%;border:0;border-radius:14px;padding:13px 16px;background:#174f3c;color:#fff;font-weight:900;font-size:14px;cursor:pointer;">
+    💳 Payments & Booking
+  </button>
+  <div id="homePaymentsBookingPanel" style="display:none;margin-top:10px;padding:15px;border-radius:16px;background:linear-gradient(135deg,#f4fbf7,#fff8ed);border:1px solid #dcebe2;">
+    <h4 style="margin:0 0 8px;color:#174f3c;">💳 Ayan Travels Payment & Booking</h4>
+    <p style="margin:0 0 11px;font-size:11px;color:#52635A;">Confirm booking, final price and availability with Ayan Travels before payment.</p>
+    <div style="display:grid;gap:7px;font-size:12px;line-height:1.55;color:#40544a;">
+      <div><strong>📱 Easypaisa:</strong> 03250758052</div>
+      <div><strong>🏦 Bank:</strong> MEEZAN DIGITAL CENTRE</div>
+      <div><strong>👤 Account Title:</strong> MUHAMMAD AYAN</div>
+      <div><strong>🔢 Account:</strong> 00300115401890</div>
+      <div><strong>IBAN:</strong> PK75MEZN0000300115401890</div>
+    </div>
+    <div style="display:grid;gap:8px;margin-top:12px;">
+      <a href="https://wa.me/923484780615?text=Assalam-o-Alaikum%20Ayan%20Travels%2C%20I%20want%20to%20make%20a%20booking%20and%20need%20payment%20details."
+         target="_blank" rel="noopener"
+         style="display:block;text-align:center;padding:11px;border-radius:12px;background:#25D366;color:#fff;text-decoration:none;font-weight:800;">
+        💬 WhatsApp for Booking
+      </a>
+      <button type="button" id="copyHomePaymentDetails"
+        style="border:0;border-radius:12px;padding:11px;background:#eef5f1;color:#174f3c;font-weight:800;cursor:pointer;">
+        📋 Copy Payment Details
+      </button>
+    </div>
+  </div>
+</div>
+
     <p class="hint">We'll use your device location to map the route</p>
 
     <div class="status-card" id="statusCard">
@@ -959,6 +1161,7 @@ body{
           <button class="theme-btn" id="lightModeBtn" type="button">☀️ Light Mode</button>
           <button class="theme-btn" id="darkModeBtn" type="button">🌙 Dark Mode</button>
         </div>
+
       </div>
     </div>
     <div class="profile-stats">
@@ -1178,9 +1381,9 @@ body{
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
     Home
   </div>
-  <div class="tab" id="tabMap">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 20l-6-3V4l6 3 6-3 6 3v13l-6-3-6 3z"/></svg>
-    Map
+  <div class="tab" id="tabDashboard">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.2 4.5L19 8.2l-3.5 3.4.8 4.8-4.3-2.3-4.3 2.3.8-4.8L5 8.2l4.8-.7L12 3z"/></svg>
+    Dashboard
   </div>
   <button class="quick-book-btn" id="quickBookBtn" type="button" aria-label="Hotel booking" title="Hotel booking">+</button>
   <div class="tab" id="tabProfile">
@@ -1218,6 +1421,8 @@ window.ayanFirebase={ready:false};
 try{const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getDatabase(app);window.ayanFirebase={ready:true,auth,db,ref,update,serverTimestamp,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut,updateProfile,sendPasswordResetEmail};window.dispatchEvent(new Event('ayanFirebaseReady'));}catch(e){console.error(e);window.dispatchEvent(new Event('ayanFirebaseReady'));}
 </script>
 <script>
+document.addEventListener("DOMContentLoaded", function(){
+
 
 
   /* ---------- editable profile ---------- */
@@ -1516,7 +1721,7 @@ try{const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getDatabase(app
 
   /* ---------- tab / view switching ---------- */
   var views = { home:'homeView', map:'mapView', profile:'profileView' };
-  var tabs = { home:'tabHome', map:'tabMap', profile:'tabProfile' };
+  var tabs = { home:'tabHome', map:'tabDashboard', profile:'tabProfile' };
 
   function goToView(name){
     Object.keys(views).forEach(function(k){
@@ -1533,7 +1738,13 @@ try{const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getDatabase(app
   }
 
   document.getElementById('tabHome').addEventListener('click', function(){ goToView('home'); });
-  document.getElementById('tabMap').addEventListener('click', function(){ goToView('map'); });
+  document.getElementById('tabDashboard').addEventListener('click', function(){
+      if(typeof openAdmin === 'function'){ openAdmin(); }
+      else {
+        var overlay=document.getElementById('adminOverlay');
+        if(overlay){ overlay.classList.add('show'); }
+      }
+    });
   document.getElementById('tabProfile').addEventListener('click', function(){ goToView('profile'); });
 
   function initOverviewMap(){
@@ -2262,6 +2473,438 @@ try{const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getDatabase(app
 
     setTimeout(function(){ if(map) map.invalidateSize(); }, 60);
   }
+
+/* ---------- Ayan Travels: detailed packages + vehicle prices ---------- */
+(function(){
+  var packages=[
+    {id:'skardu5',name:'Skardu Explorer — 5 Days / 4 Nights',price:28500,places:'Skardu • Shangrila • Upper Kachura • Deosai • Kharpocho',days:[
+      'Day 1: Arrival in Skardu, city tour & Kharpocho Fort',
+      'Day 2: Shangrila Resort & Upper Kachura Lake',
+      'Day 3: Deosai Plains excursion & Sheosar Lake',
+      'Day 4: Shigar Fort / Manthoka Waterfall & local sightseeing',
+      'Day 5: Breakfast, shopping & departure'
+    ],includes:['Hotel accommodation','Daily breakfast','Private transport','Driver/guide','Sightseeing according to itinerary'],excludes:['Flights','Lunch & dinner','Personal expenses','Entry tickets where applicable']},
+    {id:'hunza5',name:'Hunza Valley Escape — 5 Days / 4 Nights',price:26500,places:'Hunza • Karimabad • Altit Fort • Baltit Fort • Attabad Lake',days:[
+      'Day 1: Islamabad to Hunza / arrival and local sightseeing',
+      'Day 2: Baltit Fort, Altit Fort & Karimabad',
+      'Day 3: Attabad Lake, Passu Cones & Hussaini Bridge',
+      'Day 4: Khunjerab Pass / upper Hunza excursion (weather & road permitting)',
+      'Day 5: Breakfast & departure'
+    ],includes:['Hotel accommodation','Breakfast','Private vehicle','Driver/guide','Sightseeing'],excludes:['Meals other than breakfast','Entry tickets','Personal expenses']},
+    {id:'swat4',name:'Swat & Kalam — 4 Days / 3 Nights',price:19500,places:'Mingora • Malam Jabba • Kalam • Ushu • Mahodand Lake',days:[
+      'Day 1: Islamabad to Swat, Mingora & local sightseeing',
+      'Day 2: Malam Jabba and scenic mountain drive',
+      'Day 3: Kalam, Ushu Forest & Mahodand Lake (road/weather permitting)',
+      'Day 4: Breakfast & return journey'
+    ],includes:['Hotel accommodation','Breakfast','Private transport','Driver/guide'],excludes:['Lunch & dinner','Entry tickets','Personal expenses']},
+    {id:'naran4',name:'Naran Kaghan — 4 Days / 3 Nights',price:20500,places:'Balakot • Kaghan • Naran • Lulusar • Saif-ul-Malook',days:[
+      'Day 1: Islamabad to Naran via Balakot & Kaghan',
+      'Day 2: Saif-ul-Malook Lake & Naran sightseeing',
+      'Day 3: Lulusar Lake & Babusar Top (when open)',
+      'Day 4: Breakfast & return journey'
+    ],includes:['Hotel accommodation','Breakfast','Private transport','Driver/guide'],excludes:['Meals other than breakfast','Entry tickets','Personal expenses']},
+    {id:'kashmir4',name:'Kashmir Scenic Tour — 4 Days / 3 Nights',price:22500,places:'Muzaffarabad • Neelum Valley • Keran • Pir Chinasi',days:[
+      'Day 1: Islamabad to Muzaffarabad & city sightseeing',
+      'Day 2: Neelum Valley, Keran & riverside viewpoints',
+      'Day 3: Pir Chinasi & Muzaffarabad sightseeing',
+      'Day 4: Breakfast & return journey'
+    ],includes:['Hotel accommodation','Breakfast','Private transport','Driver/guide'],excludes:['Lunch & dinner','Entry tickets','Personal expenses']}
+  ];
+  var rentals=[
+    {id:'small',icon:'🚗',name:'Small Car — Economy',price:4500,unit:'per day',details:'Suzuki Alto / similar • 4 passengers • fuel excluded',best:'City trips & small groups'},
+    {id:'large',icon:'🚙',name:'Large Car — Comfortable',price:6500,unit:'per day',details:'Toyota Corolla / similar • 4–5 passengers • fuel excluded',best:'Family & long-distance travel'},
+    {id:'suv',icon:'🚘',name:'SUV / 4x4 — Mountain Ready',price:9500,unit:'per day',details:'Toyota Prado / similar • up to 7 passengers • fuel excluded',best:'Hunza, Skardu & mountain routes'},
+    {id:'jeep',icon:'🏔️',name:'Jeep — Mountain Tour',price:8500,unit:'per day',details:'Local 4x4 jeep • up to 6 passengers • fuel excluded',best:'Off-road lakes, valleys & mountain tracks'}
+  ];
+  var modal=document.getElementById('serviceModal'),choices=document.getElementById('serviceChoices'),title=document.getElementById('serviceModalTitle'),intro=document.getElementById('serviceModalIntro'),form=document.getElementById('serviceForm');
+  var mode='package',selected=null;
+  if(!modal||!choices||!form)return;
+  function money(n){return 'PKR '+Number(n).toLocaleString();}
+  function esc2(v){return String(v==null?'':v).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c];});}
+  function fillContact(){var d={};try{d=JSON.parse(localStorage.getItem('ayanProfileData')||'{}')}catch(e){};if(d.name)document.getElementById('serviceName').value=d.name;if(d.email)document.getElementById('serviceEmail').value=d.email;}
+  function packageList(){
+    title.textContent='🧳 Pakistan Tour Packages'; intro.textContent='Clear prices, destinations and day-by-day plans. Price shown is per person for the listed package and is a starting rate; final availability is confirmed before payment.';
+    choices.innerHTML='<div class="package-list">'+packages.map(function(x){return '<div class="package-item" data-pkg="'+x.id+'"><div class="emoji">🏔️</div><div class="package-info"><b>'+esc2(x.name)+'</b><small>'+esc2(x.places)+'</small><small>💰 <strong>'+money(x.price)+'</strong> / person • 2+ people</small></div><div class="package-price">Details ›</div></div>';}).join('')+'</div><div id="packageDetail" style="margin-top:12px"></div>';
+    Array.prototype.forEach.call(choices.querySelectorAll('.package-item'),function(el){el.addEventListener('click',function(){showPackage(el.dataset.pkg);});});
+  }
+  function showPackage(id){
+    selected=packages.find(function(x){return x.id===id;}); if(!selected)return;
+    var d=document.getElementById('packageDetail');
+    d.innerHTML='<div class="service-card" style="margin-top:8px"><h3>'+esc2(selected.name)+'</h3><p><strong>Starting price: '+money(selected.price)+' per person</strong></p><p><strong>📍 Where you will go:</strong> '+esc2(selected.places)+'</p><p><strong>🗓️ Day-by-day plan</strong></p><ul style="padding-left:20px;margin:6px 0;font-size:11px;line-height:1.6">'+selected.days.map(function(x){return '<li>'+esc2(x)+'</li>';}).join('')+'</ul><p><strong>✅ Included</strong></p><p>'+selected.includes.map(esc2).join(' • ')+'</p><p><strong>❌ Not included</strong></p><p>'+selected.excludes.map(esc2).join(' • ')+'</p><button class="service-btn" id="selectPackageBtn" type="button">Book / Request this package</button></div>';
+    document.getElementById('selectPackageBtn').addEventListener('click',function(){form.dataset.choice=selected.name+' — '+money(selected.price)+' per person';document.getElementById('serviceMessage').value='Package: '+selected.name+'\nPrice: '+money(selected.price)+' per person\nPlaces: '+selected.places+'\nPlease confirm availability and final total.';form.scrollIntoView({behavior:'smooth',block:'center'});});
+  }
+  function rentalList(){
+    title.textContent='🚙 Car & Jeep Rental'; intro.textContent='Choose a vehicle, see the daily rate and request it for your trip. Fuel, tolls and special-route charges are confirmed separately.';
+    choices.innerHTML='<div class="rental-list">'+rentals.map(function(x){return '<div class="rental-item" data-rental="'+x.id+'"><div class="emoji">'+x.icon+'</div><div class="package-info"><b>'+esc2(x.name)+'</b><small>'+esc2(x.details)+'</small><small>Best for: '+esc2(x.best)+'</small></div><div class="package-price">'+money(x.price)+'<br><span style="font-size:9px">'+x.unit+'</span></div></div>';}).join('')+'</div><div id="rentalDetail" style="margin-top:12px"></div>';
+    Array.prototype.forEach.call(choices.querySelectorAll('.rental-item'),function(el){el.addEventListener('click',function(){showRental(el.dataset.rental);});});
+  }
+  function showRental(id){var x=rentals.find(function(a){return a.id===id});if(!x)return;var d=document.getElementById('rentalDetail');d.innerHTML='<div class="service-card"><h3>'+x.icon+' '+esc2(x.name)+'</h3><p><strong>'+money(x.price)+' '+x.unit+'</strong></p><p>'+esc2(x.details)+'</p><p>✔ Driver option available on request<br>✔ Mountain routes subject to road/weather conditions<br>✔ Final quote depends on route and number of days</p><button class="service-btn alt" id="selectRentalBtn" type="button">Request this vehicle</button></div>';document.getElementById('selectRentalBtn').addEventListener('click',function(){form.dataset.choice=x.name+' — '+money(x.price)+' per day';document.getElementById('serviceMessage').value='Vehicle: '+x.name+'\nRate: '+money(x.price)+' per day\nDetails: '+x.details+'\nPlease confirm route, fuel/toll charges and final total.';form.scrollIntoView({behavior:'smooth',block:'center'});});}
+  function open(type){mode=type;selected=null;modal.classList.add('show');fillContact();if(type==='package')packageList();else rentalList();}
+  document.getElementById('openPackages').addEventListener('click',function(){open('package')});
+  document.getElementById('openRentals').addEventListener('click',function(){open('rental')});
+  document.getElementById('serviceModalClose').addEventListener('click',function(){modal.classList.remove('show')});
+  document.getElementById('serviceCancel').addEventListener('click',function(){modal.classList.remove('show')});
+  modal.addEventListener('click',function(e){if(e.target===modal)modal.classList.remove('show')});
+  form.addEventListener('submit',async function(e){
+    e.preventDefault();
+    var name=document.getElementById('serviceName').value.trim(),email=document.getElementById('serviceEmail').value.trim(),phone=document.getElementById('servicePhone').value.trim(),date=document.getElementById('serviceDate').value,people=document.getElementById('servicePeople').value,msg=document.getElementById('serviceMessage').value.trim();
+    var choice=form.dataset.choice||'General '+(mode==='package'?'tour package':'vehicle rental')+' request';
+    if(!name||!email||!phone||!date){alert('Please complete your name, email, phone and preferred date.');return;}
+    var fb=window.ayanFirebase;
+    var record={serviceType:mode,choice:choice,name:name,email:email,phone:phone,date:date,people:people,message:msg,createdAt:new Date().toISOString(),status:'New request'};
+    try{if(fb&&fb.ready&&fb.auth.currentUser){var {get,ref,update}=await import('https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js');await update(ref(fb.db,'serviceRequests/'+fb.auth.currentUser.uid+'/'+Date.now()),record);}}catch(err){console.warn('service request save failed',err)}
+    var subject=encodeURIComponent('Ayan Travels — '+choice),body=encodeURIComponent('New Ayan Travels request\n\nService: '+(mode==='package'?'Tour Package':'Car / Jeep Rental')+'\nChoice: '+choice+'\nName: '+name+'\nEmail: '+email+'\nPhone: '+phone+'\nDate: '+date+'\nPeople: '+people+'\nDetails: '+msg+'\n\nPlease confirm availability and final price.');
+    document.getElementById('serviceMessage').value=''; form.removeAttribute('data-choice');
+    choices.innerHTML='<div class="service-card" style="margin-top:10px"><h3>✅ Request prepared</h3><p>Your request for <strong>'+esc2(choice)+'</strong> has been saved when you are signed in. Send the details to Ayan Travels to confirm the final price and availability.</p><button class="service-btn" type="button" onclick="window.location.href=\'mailto:ayankhan4780@gmail.com?subject='+subject+'&body='+body+'\'">📧 Send request by email</button></div>';
+  });
+})();
+
+});
+</script>
+
+<div class="service-modal" id="serviceModal">
+  <div class="service-box">
+    <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;"><div><h3 id="serviceModalTitle">Travel Service</h3><p id="serviceModalIntro">Send your request and Ayan Travels will contact you.</p></div><button id="serviceModalClose" type="button" style="width:34px;height:34px;border:0;border-radius:50%;background:#eef5f1;color:#263b32;font-size:22px;cursor:pointer">×</button></div>
+    <div id="serviceChoices"></div>
+    <form class="service-form" id="serviceForm">
+      <label for="serviceName">Name</label><input id="serviceName" required placeholder="Your name">
+      <label for="serviceEmail">Email</label><input id="serviceEmail" type="email" required placeholder="you@example.com">
+      <label for="servicePhone">Phone / WhatsApp</label><input id="servicePhone" required placeholder="03XXXXXXXXX">
+      <label for="serviceDate">Preferred date</label><input id="serviceDate" type="date" required>
+      <label for="servicePeople">Number of people</label><select id="servicePeople"><option>2</option><option>3</option><option>5</option><option>6+</option></select>
+      <label for="serviceMessage">Extra details</label><textarea id="serviceMessage" rows="3" placeholder="Pickup city, hotel preference, special request..."></textarea>
+      <div class="service-actions"><button class="service-cancel" id="serviceCancel" type="button">Cancel</button><button class="service-submit" type="submit">📩 Send Request</button></div>
+      <div class="lead-note">This is a booking request, not an automatic confirmation. Final availability, price and payment instructions are confirmed by Ayan Travels/partner before payment.</div>
+    </form>
+  </div>
+</div>
+
+
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-box">
+    <div class="admin-head"><div><h3>👑 Ayan Travels Admin Dashboard</h3><div class="admin-muted">Manage requests, payment status, driver assignments and commission estimates.</div></div><button class="admin-close" id="adminClose" type="button">×</button></div>
+    <div id="adminLoginArea">
+      <div class="admin-card">
+        <h4>👑 Owner access</h4>
+        <p class="admin-muted">Sign in with the Ayan Travels owner Firebase account.</p>
+        <form id="ownerDashboardLoginForm" style="display:grid;gap:9px;margin-top:10px">
+          <input id="ownerDashboardEmail" class="admin-input" type="email" autocomplete="username" value="ayankhan4780@gmail.com" required>
+          <input id="ownerDashboardPassword" class="admin-input" type="password" autocomplete="current-password" placeholder="Owner password" required>
+          <button class="admin-btn" id="ownerDashboardLoginBtn" type="submit">🔐 Sign in to Dashboard</button>
+          <div id="ownerDashboardLoginMsg" class="admin-muted" style="min-height:18px"></div>
+        </form>
+      </div>
+    </div>
+    <div id="adminPanel" style="display:none">
+      <div class="admin-grid">
+        <div class="admin-stat"><b id="aTotal">0</b><span>Total requests</span></div><div class="admin-stat"><b id="aPending">0</b><span>Pending</span></div><div class="admin-stat"><b id="aPaid">0</b><span>Paid / verified</span></div><div class="admin-stat"><b id="aCommission">PKR 0</b><span>Commission estimate</span></div>
+      </div>
+      <div class="admin-card"><h4>💳 Payment verification & bookings</h4><div class="admin-muted">Hotel bookings and tour/vehicle requests from Firebase Realtime Database appear here.</div><div id="adminRequests"></div></div>
+      <div class="admin-card"><h4>👨‍✈️ Driver assignment</h4><div id="adminDrivers"></div></div>
+      <div class="admin-card"><h4>🏨 Hotel / partner notes</h4><div class="admin-muted">Partner status is kept separate from public listings. Add only businesses that have actually agreed to work with Ayan Travels.</div><div class="admin-form" style="margin-top:9px"><input class="admin-input" id="partnerName" placeholder="Partner / hotel name"><input class="admin-input" id="partnerRate" type="number" placeholder="Commission %"><input class="admin-input full" id="partnerNote" placeholder="Agreement / contact note"><button class="admin-btn full" id="savePartnerNote" type="button">Save partner note</button></div><div id="partnerNotes"></div></div>
+    </div>
+  </div>
+</div>
+
+<script id="ayan-v5-admin-js">
+(function(){
+ const OWNER_EMAIL='ayankhan4780@gmail.com';
+ const overlay=document.getElementById('adminOverlay'), panel=document.getElementById('adminPanel'), loginArea=document.getElementById('adminLoginArea');
+ const esc=x=>String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[m]));
+ const money=n=>'PKR '+Number(n||0).toLocaleString('en-PK');
+ const drivers=[
+  {name:'Skardu on Wheels',area:'Skardu',phone:'+923354775274',vehicle:'Cars / SUV',rate:5,status:'Available'},
+  {name:'Swat Tourist Rent A Car Online',area:'Swat / Mingora',phone:'+923156989803',vehicle:'Cars / SUV',rate:5,status:'Available'}
+ ];
+ function wa(phone,text){return 'https://wa.me/'+phone.replace(/\D/g,'')+'?text='+encodeURIComponent(text)}
+ function openAdmin(){overlay.classList.add('show'); refreshAdmin();}
+ document.getElementById('adminClose').onclick=()=>overlay.classList.remove('show');
+ const ownerLoginForm=document.getElementById('ownerDashboardLoginForm');
+ if(ownerLoginForm){
+   ownerLoginForm.addEventListener('submit', async function(e){
+     e.preventDefault();
+     const email=document.getElementById('ownerDashboardEmail').value.trim().toLowerCase();
+     const password=document.getElementById('ownerDashboardPassword').value;
+     const msg=document.getElementById('ownerDashboardLoginMsg');
+     if(email!==OWNER_EMAIL.toLowerCase()){
+       msg.textContent='Access denied: this Dashboard is only for the owner account.';
+       msg.style.color='#b42318';
+       return;
+     }
+     const fb=window.ayanFirebase;
+     if(!fb || !fb.ready || !fb.signInWithEmailAndPassword){
+       msg.textContent='Firebase is still loading. Please try again in a moment.';
+       msg.style.color='#b42318';
+       return;
+     }
+     msg.textContent='Signing in…';
+     msg.style.color='';
+     try{
+       await fb.signInWithEmailAndPassword(fb.auth,email,password);
+       msg.textContent='✅ Owner verified. Opening Dashboard…';
+       msg.style.color='#087f5b';
+       window.dispatchEvent(new Event('ayanOwnerLoginSuccess'));
+     }catch(err){
+       console.error(err);
+       msg.textContent=(err && err.code==='auth/invalid-credential')
+         ? '❌ Incorrect owner email or password.'
+         : '❌ Could not sign in. Please check the Firebase account and try again.';
+       msg.style.color='#b42318';
+     }
+   });
+ }
+ window.addEventListener('ayanOwnerLoginSuccess', function(){ refreshAdmin(); });
+ const ownerBtn=document.createElement('button'); ownerBtn.className='admin-btn'; ownerBtn.type='button'; ownerBtn.textContent='👑 Owner Admin Dashboard'; ownerBtn.onclick=openAdmin;
+ const ownerOverlay=document.getElementById('ownerOverlay'); if(ownerOverlay){const card=ownerOverlay.querySelector('.owner-card'); if(card)card.appendChild(ownerBtn)}
+ async function refreshAdmin(){
+  const fb=window.ayanFirebase, user=fb&&fb.auth&&fb.auth.currentUser;
+  if(!user){panel.style.display='none';loginArea.style.display='block';return;}
+  if((user.email||'').toLowerCase()!==OWNER_EMAIL.toLowerCase()){panel.style.display='none';loginArea.innerHTML='<div class="admin-card"><h4>Access denied</h4><p class="admin-muted">This dashboard is restricted to the owner account.</p></div>';return;}
+  loginArea.style.display='none';panel.style.display='block';
+  renderDrivers(); renderPartners();
+  let records=[];
+  try{
+    const {get,ref}=await import('https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js');
+    const [serviceSnap,bookingSnap]=await Promise.all([get(ref(fb.db,'serviceRequests')),get(ref(fb.db,'bookings'))]);
+    if(serviceSnap.exists()){
+      const raw=serviceSnap.val(); Object.keys(raw).forEach(uid=>Object.keys(raw[uid]||{}).forEach(id=>records.push({...raw[uid][id],_id:id,_uid:uid,_kind:'service'})));
+    }
+    if(bookingSnap.exists()){
+      const raw=bookingSnap.val(); Object.keys(raw).forEach(uid=>Object.keys(raw[uid]||{}).forEach(id=>records.push({...raw[uid][id],_id:id,_uid:uid,_kind:'booking',choice:'🏨 '+(raw[uid][id].hotel||'Hotel booking')})));
+    }
+  }catch(e){console.warn('Admin Firebase read failed',e);}
+  window.__ayanAdminRecords=records;
+  const pending=records.filter(x=>!['Paid / Verified','Rejected'].includes(x.status||x.paymentStatus||'New request')).length;
+  const paid=records.filter(x=>x.status==='Paid / Verified'||String(x.paymentStatus||'').toLowerCase().includes('verified')).length;
+  const commission=records.reduce((a,x)=>a+Number(x.commission||0),0);
+  document.getElementById('aTotal').textContent=records.length;
+  document.getElementById('aPending').textContent=pending;
+  document.getElementById('aPaid').textContent=paid;
+  document.getElementById('aCommission').textContent=money(commission);
+  const box=document.getElementById('adminRequests');
+  if(!records.length){box.innerHTML='<p class="admin-muted">No bookings or service requests found yet.</p>';return;}
+  box.innerHTML=records.slice().reverse().map((x,i)=>{
+    const status=x._kind==='booking'?(x.paymentStatus||'New booking'):(x.status||'New request');
+    const details=x._kind==='booking'
+      ? (esc(x.name||'')+' · '+esc(x.email||'')+'<br>Hotel: '+esc(x.hotel||'')+' · '+esc(x.place||'')+'<br>📅 '+esc(x.checkIn||'')+' → '+esc(x.checkOut||'')+' · Guests: '+esc(x.guests||'')+'<br>Payment: '+esc(x.payment||'')+' · PKR '+esc(x.pricePerNight||'')+' / night<br>Txn: '+esc(x.easypaisaTxn||'N/A'))
+      : (esc(x.name||'')+' · '+esc(x.phone||'')+' · '+esc(x.email||'')+'<br>Date: '+esc(x.date||'')+' · People: '+esc(x.people||'')+'<br>'+esc(x.message||''));
+    return '<div class="admin-card"><div class="admin-row"><strong>'+esc(x.choice||x.serviceType||'Request')+'</strong><span class="driver-status '+(status==='Rejected'?'busy':'')+'">'+esc(status)+'</span></div><div class="admin-muted">'+details+'</div><div class="admin-form" style="margin-top:8px"><input class="admin-input" id="comm'+i+'" type="number" min="0" placeholder="Commission PKR" value="'+Number(x.commission||0)+'"><input class="admin-input" id="pay'+i+'" placeholder="Transaction ID" value="'+esc(x.transactionId||x.easypaisaTxn||'')+'"></div><div class="admin-actions"><button class="approve" onclick="window.ayanAdminUpdate('+i+',\'Paid / Verified\')">✓ Verify payment</button><button class="reject" onclick="window.ayanAdminUpdate('+i+',\'Rejected\')">✕ Reject</button><button class="assign" onclick="window.ayanAdminContact('+i+')">💬 Contact customer</button></div></div>';
+  }).join('');
+ }
+ window.ayanAdminUpdate=async function(i,status){
+  const x=window.__ayanAdminRecords[i]; if(!x)return;
+  const fb=window.ayanFirebase;if(!fb||!fb.db)return alert('Firebase is not ready.');
+  const commission=Number(document.getElementById('comm'+i)?.value||0),transactionId=document.getElementById('pay'+i)?.value.trim()||'';
+  try{
+    const {ref,update}=await import('https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js');
+    const path=x._kind==='booking'?'bookings/'+x._uid+'/'+x._id:'serviceRequests/'+x._uid+'/'+x._id;
+    const values=x._kind==='booking'?{paymentStatus:status,commission,transactionId,verifiedAt:new Date().toISOString(),verifiedBy:OWNER_EMAIL}:{status,commission,transactionId,verifiedAt:new Date().toISOString(),verifiedBy:OWNER_EMAIL};
+    await update(ref(fb.db,path),values);
+    alert(status==='Paid / Verified'?'Payment verified.':'Request rejected.'); refreshAdmin();
+  }catch(e){console.error(e);alert('Could not update. Check Firebase Database Rules.');}
+ };
+ window.ayanAdminContact=i=>{const x=window.__ayanAdminRecords[i];if(x)window.open('https://wa.me/'+String(x.phone).replace(/\D/g,'')+'?text='+encodeURIComponent('Ayan Travels booking update: '+(x.choice||'your request')+' on '+(x.date||'')),'_blank')};
+ function renderDrivers(){document.getElementById('adminDrivers').innerHTML=drivers.map((d,i)=>`<div class="admin-card"><div class="admin-row"><strong>${esc(d.name)}</strong><span class="driver-status ${d.status==='Busy'?'busy':''}">${d.status}</span></div><div class="admin-muted">${esc(d.area)} · ${esc(d.vehicle)} · ${esc(d.phone)}<br>Public listing/provider — not an official Ayan Travels partner unless separately agreed.</div><div class="admin-actions"><button class="approve" type="button" onclick="window.open(wa('${d.phone}','Hello, I am contacting you from Ayan Travels regarding driver/vehicle availability.'),'_blank')">💬 WhatsApp</button><button class="assign" type="button" onclick="window.location.href='tel:${d.phone}'">📞 Call</button><button class="assign" type="button" onclick="window.ayanToggleDriver(${i})">${d.status==='Busy'?'Set Available':'Set Busy'}</button></div></div>`).join('')}
+ window.ayanToggleDriver=i=>{drivers[i].status=drivers[i].status==='Busy'?'Available':'Busy';renderDrivers()};
+ function renderPartners(){const a=JSON.parse(localStorage.getItem('ayanPartnerNotes')||'[]');document.getElementById('partnerNotes').innerHTML=a.length?a.map((x,i)=>'<div class="admin-card"><strong>'+esc(x.name)+'</strong> · '+esc(x.rate)+'%<div class="admin-muted">'+esc(x.note)+'</div></div>').join(''):'<p class="admin-muted">No partner agreements saved on this device.</p>'}
+ document.getElementById('savePartnerNote').onclick=()=>{const name=document.getElementById('partnerName').value.trim();if(!name)return alert('Enter partner name.');const a=JSON.parse(localStorage.getItem('ayanPartnerNotes')||'[]');a.push({name,rate:Number(document.getElementById('partnerRate').value||0),note:document.getElementById('partnerNote').value.trim(),savedAt:new Date().toISOString()});localStorage.setItem('ayanPartnerNotes',JSON.stringify(a));document.getElementById('partnerName').value='';document.getElementById('partnerRate').value='';document.getElementById('partnerNote').value='';renderPartners();};
+ if(window.ayanFirebase&&window.ayanFirebase.auth){try{import('https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js').then(({onAuthStateChanged})=>onAuthStateChanged(window.ayanFirebase.auth,()=>{if(overlay.classList.contains('show'))refreshAdmin()}))}catch(e){}}
+})();
+</script>
+
+
+
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var b=document.getElementById('homePaymentsBookingBtn');
+  var p=document.getElementById('homePaymentsBookingPanel');
+  if(b && p){
+    b.addEventListener('click', function(){
+      var open=p.style.display==='block';
+      p.style.display=open?'none':'block';
+      b.textContent=open?'💳 Payments & Booking':'✕ Close Payments & Booking';
+    });
+  }
+  var c=document.getElementById('copyHomePaymentDetails');
+  if(c){
+    c.addEventListener('click', async function(){
+      var d='Ayan Travels Payment Details\nEasypaisa: 03250758052\nBank: MEEZAN DIGITAL CENTRE\nAccount Title: MUHAMMAD AYAN\nAccount: 00300115401890\nIBAN: PK75MEZN0000300115401890';
+      try{
+        await navigator.clipboard.writeText(d);
+        c.textContent='✅ Payment Details Copied';
+        setTimeout(function(){c.textContent='📋 Copy Payment Details';},1800);
+      }catch(e){alert(d);}
+    });
+  }
+});
+</script>
+
+
+
+
+
+<script id="ayan-owner-dashboard-final-fix">
+document.addEventListener('DOMContentLoaded', function(){
+  const OWNER='ayankhan4780@gmail.com';
+  function ownerIsSignedIn(){
+    const fb=window.ayanFirebase;
+    const u=fb && fb.auth && fb.auth.currentUser;
+    return !!(u && (u.email||'').toLowerCase()===OWNER);
+  }
+  function keepOwnerInsideApp(){
+    if(!ownerIsSignedIn()) return;
+    const gate=document.getElementById('authGate');
+    const pill=document.getElementById('accountPill');
+    if(gate) gate.style.display='none';
+    if(pill) pill.classList.add('show');
+    const email=document.getElementById('accountEmail');
+    if(email) email.textContent='Owner';
+  }
+  function showDashboard(){
+    keepOwnerInsideApp();
+    const overlay=document.getElementById('adminOverlay');
+    const login=document.getElementById('adminLoginArea');
+    const panel=document.getElementById('adminPanel');
+    if(overlay) overlay.classList.add('show');
+    if(ownerIsSignedIn()){
+      if(login) login.style.display='none';
+      if(panel) panel.style.display='block';
+      if(typeof refreshAdmin==='function') refreshAdmin();
+    }
+  }
+
+  window.addEventListener('ayanFirebaseReady', function(){
+    const fb=window.ayanFirebase;
+    if(fb && fb.ready && fb.onAuthStateChanged){
+      fb.onAuthStateChanged(fb.auth,function(user){
+        if(user && (user.email||'').toLowerCase()===OWNER){
+          keepOwnerInsideApp();
+          const login=document.getElementById('adminLoginArea');
+          const panel=document.getElementById('adminPanel');
+          if(login) login.style.display='none';
+          if(panel) panel.style.display='block';
+          if(typeof refreshAdmin==='function') refreshAdmin();
+        }
+      });
+    }
+  });
+
+  const form=document.getElementById('ownerDashboardLoginForm');
+  if(form){
+    form.addEventListener('submit',function(){
+      setTimeout(keepOwnerInsideApp,300);
+      setTimeout(function(){
+        if(ownerIsSignedIn()) showDashboard();
+      },900);
+    },false);
+  }
+});
+</script>
+<script id="ayan-owner-auth-hard-fix">
+(function(){
+  const OWNER='ayankhan4780@gmail.com';
+  let ownerPending=false;
+  const isOwner=()=>{const f=window.ayanFirebase,u=f&&f.auth&&f.auth.currentUser;return !!(u&&String(u.email||'').toLowerCase()===OWNER);};
+  const hideGate=()=>{const g=document.getElementById('authGate');if(g)g.style.setProperty('display','none','important');const p=document.getElementById('accountPill');if(p)p.classList.add('show');};
+  const showOwnerPanel=()=>{const o=document.getElementById('adminOverlay'),l=document.getElementById('adminLoginArea'),p=document.getElementById('adminPanel');if(o)o.classList.add('show');if(l)l.style.display='none';if(p)p.style.display='block';};
+  function bind(){
+    const form=document.getElementById('ownerDashboardLoginForm');
+    if(form && !form.dataset.hardBound){
+      form.dataset.hardBound='1';
+      form.addEventListener('submit',async function(e){
+        e.preventDefault(); e.stopImmediatePropagation();
+        const email=document.getElementById('ownerDashboardEmail').value.trim().toLowerCase();
+        const pass=document.getElementById('ownerDashboardPassword').value;
+        const msg=document.getElementById('ownerDashboardLoginMsg');
+        if(email!==OWNER){msg.textContent='Access denied: owner account only.';return;}
+        const fb=window.ayanFirebase;
+        if(!fb||!fb.ready){msg.textContent='Firebase is loading. Try again in a moment.';return;}
+        ownerPending=true; msg.textContent='Signing in…';
+        try{
+          await fb.signInWithEmailAndPassword(fb.auth,email,pass);
+          await new Promise((resolve,reject)=>{
+            let done=false;
+            const unsub=fb.onAuthStateChanged(fb.auth,function(u){
+              if(done)return;
+              if(u && String(u.email||'').toLowerCase()===OWNER){done=true;unsub&&unsub();resolve(u);}
+            });
+            setTimeout(()=>{if(!done){done=true;unsub&&unsub();reject(new Error('auth-timeout'));}},7000);
+          });
+          ownerPending=false; hideGate(); showOwnerPanel();
+          msg.textContent='✅ Owner verified.';
+          if(typeof refreshAdmin==='function') refreshAdmin();
+        }catch(err){
+          ownerPending=false;
+          msg.textContent=(err&&err.code==='auth/invalid-credential')?'❌ Incorrect owner email or password.':'❌ '+(err&&err.message?err.message:'Could not sign in.');
+        }
+      },true);
+    }
+    const fb=window.ayanFirebase;
+    if(fb&&fb.ready&&fb.onAuthStateChanged&&!fb.__ownerHardListener){
+      fb.__ownerHardListener=true;
+      fb.onAuthStateChanged(fb.auth,function(u){
+        if(u && String(u.email||'').toLowerCase()===OWNER){hideGate();}
+      });
+    }
+  }
+  document.addEventListener('DOMContentLoaded',bind);
+  window.addEventListener('ayanFirebaseReady',bind);
+  setTimeout(bind,1000);
+  setTimeout(bind,2500);
+  const obs=new MutationObserver(function(){if(isOwner()||ownerPending)hideGate();});
+  document.addEventListener('DOMContentLoaded',function(){const g=document.getElementById('authGate');if(g)obs.observe(g,{attributes:true,attributeFilter:['style','class']});});
+})();
+</script>
+
+<script id="ayan-business-booking-sync">
+(function(){
+  const KEY='ayanBookingQueue';
+  function read(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[]}}
+  function write(a){localStorage.setItem(KEY,JSON.stringify(a))}
+  function collect(form){
+    const data={createdAt:new Date().toISOString(),status:'Pending',type:'Booking'};
+    form.querySelectorAll('input,select,textarea').forEach(function(el){
+      if(el.name || el.id){
+        const k=(el.name||el.id).replace(/[^a-zA-Z0-9_]/g,'_');
+        if(k && el.value) data[k]=el.value;
+      }
+    });
+    return data;
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    document.querySelectorAll('form').forEach(function(form){
+      const text=(form.innerText||'').toLowerCase();
+      if(!/book|package|vehicle|hotel|tour/.test(text)) return;
+      form.addEventListener('submit',function(){
+        try{
+          const a=read(); a.unshift(collect(form)); write(a.slice(0,100));
+        }catch(e){}
+      },true);
+    });
+
+    // Upgrade any existing owner dashboard counters/list to show the captured queue.
+    function refresh(){
+      const a=read();
+      const total=document.getElementById('dashTotal'), pending=document.getElementById('dashPending');
+      if(total) total.textContent=a.length;
+      if(pending) pending.textContent=a.filter(x=>x.status==='Pending').length;
+      const list=document.getElementById('dashBookingsList');
+      if(list){
+        list.innerHTML=a.length ? a.map(function(x,i){
+          const vals=Object.keys(x).filter(k=>!['createdAt','status','type'].includes(k)).slice(0,5)
+            .map(k=>'<div><b>'+k+':</b> '+String(x[k]).replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]})+'</div>').join('');
+          return '<div style="text-align:left;padding:12px;border:1px solid #dce8e2;border-radius:13px;margin-bottom:8px;background:#fff"><strong>#'+(i+1)+' • '+x.status+'</strong><div style="font-size:11px;color:#64756d;margin-top:5px">'+vals+'</div></div>';
+        }).join('') : '<div class="owner-empty">No booking requests yet.</div>';
+      }
+    }
+    window.ayanRefreshBookingDashboard=refresh;
+    refresh();
+  });
+})();
 </script>
 </body>
 </html>
