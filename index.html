@@ -956,6 +956,47 @@ img,svg{max-width:100%;}
 #tabDashboard{cursor:pointer;}
 #tabDashboard svg{width:22px;height:22px;}
 </style>
+
+<style id="ayan-booking-history-view-fix">
+.history-view-btn{border:0;border-radius:999px;padding:8px 12px;background:#e9f7f1;color:#007f6d;font-weight:900;font-size:11px;cursor:pointer;white-space:nowrap;}
+.history-view-btn:active{transform:scale(.97);}
+.history-overlay{display:none;position:fixed;inset:0;background:rgba(8,18,15,.72);z-index:5200;align-items:center;justify-content:center;padding:14px;}
+.history-overlay.show{display:flex;}
+.history-box{width:560px;max-width:100%;max-height:92vh;overflow:hidden;background:#fff;border-radius:24px;box-shadow:0 22px 70px rgba(0,0,0,.38);display:flex;flex-direction:column;}
+.history-head{padding:18px 18px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #edf2ef;}
+.history-head h3{margin:0;font-family:'Fraunces',serif;color:var(--deep);font-size:23px;}
+.history-close{width:36px;height:36px;border:0;border-radius:50%;background:#eef5f1;color:var(--deep);font-size:23px;cursor:pointer;}
+.history-body{overflow:auto;padding:14px 18px 20px;}
+.history-empty{text-align:center;padding:28px 10px;color:#718078;font-size:13px;font-weight:800;}
+.history-item{border:1px solid #dfeae4;border-radius:16px;background:#fbfdfb;padding:13px;margin-bottom:10px;}
+.history-item:last-child{margin-bottom:0;}
+.history-item-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;}
+.history-item-title{font-size:14px;font-weight:900;color:var(--deep);line-height:1.35;}
+.history-item-type{font-size:10.5px;color:#718078;margin-top:3px;font-weight:800;}
+.history-status{font-size:10px;font-weight:900;padding:5px 8px;border-radius:999px;background:#e8f6ee;color:#17633c;white-space:nowrap;}
+.history-status.pending{background:#fff4d9;color:#8a5a00;}
+.history-status.rejected{background:#ffe5e5;color:#9b2226;}
+.history-details{margin-top:9px;font-size:11.5px;color:#52635a;line-height:1.65;}
+.history-details b{color:#31554b;}
+body.dark-mode .history-box{background:#173029;color:#e8f2ed;}
+body.dark-mode .history-head{border-bottom-color:#29433b;}
+body.dark-mode .history-head h3{color:#f1f7f4;}
+body.dark-mode .history-close{background:#29433b;color:#e8f2ed;}
+body.dark-mode .history-item{background:#10221d;border-color:#35534a;}
+body.dark-mode .history-item-title{color:#f1f7f4;}
+body.dark-mode .history-details{color:#b7c7c0;}
+</style>
+
+<style id="ayan-mobile-final-polish">
+html,body{max-width:100%;overflow-x:hidden}
+button,input,select,textarea{max-width:100%;box-sizing:border-box}
+img{max-width:100%;height:auto}
+@media (max-width:520px){
+  .admin-actions{flex-wrap:wrap}
+  .admin-actions button{min-height:42px}
+  .admin-card{max-width:100%;box-sizing:border-box}
+}
+</style>
 </head>
 <body>
 
@@ -1187,8 +1228,8 @@ img,svg{max-width:100%;}
       <details><summary>Are hotel prices guaranteed?</summary><p>No. Prices shown on the website are displayed as listed in the app and may change. Confirm the final price before payment.</p></details>
     </div>
     <div class="travel-info-card" id="bookingHistoryCard">
-      <div class="travel-info-head"><h3>📋 Booking History</h3><span>My Trips</span></div>
-      <div id="bookingHistoryList"><p class="support-note">Your bookings will appear here after you sign in and make a booking.</p></div>
+      <div class="travel-info-head"><h3>📋 Booking History</h3><button type="button" id="viewHistoryBtn" class="history-view-btn">View History</button></div>
+      <div id="bookingHistoryList"><p class="support-note">Sign in and tap <b>View History</b> to see all your bookings and their status.</p></div>
     </div>
     <div class="travel-info-card" id="reviewsCard">
       <div class="travel-info-head"><h3>⭐ Reviews & Ratings</h3><span>Share your experience</span></div>
@@ -1214,6 +1255,13 @@ img,svg{max-width:100%;}
         <span id="pLastDist">No route calculated yet</span>
       </div>
     </div>
+  </div>
+</div>
+
+<div class="history-overlay" id="historyOverlay">
+  <div class="history-box">
+    <div class="history-head"><h3>📋 My Booking History</h3><button class="history-close" id="historyClose" type="button">×</button></div>
+    <div class="history-body" id="historyModalList"><div class="history-empty">Loading your booking history...</div></div>
   </div>
 </div>
 
@@ -1475,22 +1523,89 @@ document.addEventListener("DOMContentLoaded", function(){
     var booking={name,email,hotel:hotel.name,place:place.name,guests:Number(guests),checkIn:ci,checkOut:co,payment,paymentStatus,easypaisaTxn:easypaisaTxn||'',pricePerNight:price,createdAt:new Date().toISOString()};
     try{var fb=window.ayanFirebase;if(fb&&fb.ready&&fb.auth.currentUser){await fb.update(fb.ref(fb.db,'bookings/'+fb.auth.currentUser.uid+'/'+Date.now()),booking);}}catch(e){console.warn('Booking save failed',e);}
     try{localStorage.setItem('ayanLastBooking',JSON.stringify(booking));}catch(e){}
+    setTimeout(loadBookingHistory,200);
     var subject=encodeURIComponent('New Ayan Travels Hotel Booking - '+hotel.name), body=encodeURIComponent('New room booking\n\nName: '+name+'\nEmail: '+email+'\nHotel: '+hotel.name+'\nDestination: '+place.name+'\nGuests: '+guests+' persons\nCheck-in: '+ci+'\nCheck-out: '+co+'\nPayment: '+payment+'\nPayment status: '+paymentStatus+'\nEasypaisa transaction/reference ID: '+(easypaisaTxn||'N/A')+'\nEasypaisa number: 03250758052\nPrice: PKR '+price+' per night');
     bookingFormArea.style.display='none'; bookingSuccess.style.display='block'; bookingSuccess.innerHTML='<div class="check">✅</div><h4>Your room is booked!</h4><p>Your room at <b>'+hotel.name+'</b> has been booked successfully.<br><strong>Have a safe journey! ✈️</strong></p><button class="booking-confirm" type="button" onclick="window.location.href=\'mailto:ayankhan4780@gmail.com?subject='+subject+'&body='+body+'\'">📧 Email booking details</button><div class="booking-email-note">A direct email can only be sent automatically after an email service/SMTP is connected. This button opens your email app with the complete booking prepared for <b>ayankhan4780@gmail.com</b>.</div>';
   });
 
   /* ---------- booking history, reviews & owner view ---------- */
+  async function getCustomerBookingRows(){
+    var fb=window.ayanFirebase;
+    if(!(fb&&fb.ready&&fb.auth.currentUser)) return [];
+    var {get}=await import('https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js');
+    var uid=fb.auth.currentUser.uid;
+    var results=await Promise.all([get(fb.ref(fb.db,'bookings/'+uid)),get(fb.ref(fb.db,'serviceRequests/'+uid))]);
+    var hotelData=results[0].exists()?results[0].val():{};
+    var serviceData=results[1].exists()?results[1].val():{};
+    var rows=[];
+    Object.keys(hotelData).forEach(function(id){rows.push(Object.assign({_historyType:'Hotel',_historyId:id},hotelData[id]||{}));});
+    Object.keys(serviceData).forEach(function(id){var b=serviceData[id]||{};rows.push(Object.assign({_historyType:b.serviceType==='package'?'Tour Package':'Vehicle',_historyId:id},b));});
+    rows.sort(function(a,b){return new Date(b.createdAt||0)-new Date(a.createdAt||0);});
+    return rows;
+  }
+  function historyStatus(b){
+    var raw=String(b.status||'').trim();
+    if(raw==='Rejected'||raw.toLowerCase().includes('reject')) return 'Rejected';
+    if(raw==='Paid / Verified'||raw.toLowerCase().includes('verified')) return 'Accepted / Verified';
+    var ps=String(b.paymentStatus||'').trim();
+    if(ps==='Rejected'||ps.toLowerCase().includes('reject')) return 'Rejected';
+    if(ps==='Paid / Verified'||ps.toLowerCase().includes('verified')) return 'Accepted / Verified';
+    return 'Pending';
+  }
+  function historyStatusClass(status){
+    var x=String(status).toLowerCase();
+    return x.includes('reject')?'rejected':(x.includes('pending')?'pending':'');
+  }
+  function historyDetailHtml(b,type){
+    var parts=[];
+    if(type==='Hotel'){
+      parts.push('<b>🏨 Hotel:</b> '+esc(b.hotel||'Hotel'));
+      if(b.place)parts.push('<b>📍 Destination:</b> '+esc(b.place));
+      if(b.checkIn||b.checkOut)parts.push('<b>📅 Dates:</b> '+esc(b.checkIn||'')+' → '+esc(b.checkOut||''));
+      if(b.guests)parts.push('<b>👥 Guests:</b> '+esc(b.guests)+' persons');
+      if(b.pricePerNight)parts.push('<b>💰 Price:</b> PKR '+Number(b.pricePerNight).toLocaleString()+' / night');
+      if(b.payment)parts.push('<b>💳 Payment:</b> '+esc(b.payment));
+      if(b.createdAt)parts.push('<b>🕐 Requested:</b> '+esc(new Date(b.createdAt).toLocaleString()));
+    }else{
+      parts.push('<b>'+ (type==='Tour Package'?'🧳 Package:':'🚙 Vehicle:') +'</b> '+esc(b.choice||''));
+      if(b.date)parts.push('<b>📅 Date:</b> '+esc(b.date));
+      if(b.people)parts.push('<b>👥 People:</b> '+esc(b.people));
+      if(b.phone)parts.push('<b>📞 Phone:</b> '+esc(b.phone));
+      if(b.message)parts.push('<b>📝 Details:</b> '+esc(b.message));
+      if(b.createdAt)parts.push('<b>🕐 Requested:</b> '+esc(new Date(b.createdAt).toLocaleString()));
+    }
+    return parts.join('<br>');
+  }
+  function renderHistoryRows(rows,box){
+    if(!box)return;
+    if(!rows.length){box.innerHTML='<div class="history-empty">No booking history found yet.<br>Book a hotel, vehicle or package and it will appear here.</div>';return;}
+    box.innerHTML=rows.map(function(b){
+      var type=b._historyType||'Booking', status=historyStatus(b);
+      var title=b.hotel||b.choice||type;
+      return '<div class="history-item"><div class="history-item-top"><div><div class="history-item-title">'+esc(title)+'</div><div class="history-item-type">'+esc(type)+'</div></div><span class="history-status '+historyStatusClass(status)+'">'+esc(status)+'</span></div><div class="history-details">'+historyDetailHtml(b,type)+'</div></div>';
+    }).join('');
+  }
   async function loadBookingHistory(){
     var box=document.getElementById('bookingHistoryList'); if(!box)return;
     var fb=window.ayanFirebase;
     if(!(fb&&fb.ready&&fb.auth.currentUser)){box.innerHTML='<p class="support-note">Please sign in to view your booking history.</p>';return;}
-    try{
-      var {get}=await import('https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js');
-      var snap=await get(fb.ref(fb.db,'bookings/'+fb.auth.currentUser.uid));
-      var data=snap.exists()?snap.val():{}; var rows=Object.values(data).reverse();
-      box.innerHTML=rows.length?rows.map(function(b){return '<div class="booking-history-item"><b>'+esc(b.hotel||'Hotel')+'</b><br>'+esc(b.place||'')+' · '+(b.guests||0)+' persons<br>📅 '+esc(b.checkIn||'')+' → '+esc(b.checkOut||'')+'<br>💰 PKR '+Number(b.pricePerNight||0).toLocaleString()+' / night<br>💳 '+esc(b.payment||'')+' · <b>'+esc(b.paymentStatus||'Pending')+'</b></div>';}).join(''):'<p class="support-note">No bookings found yet.</p>';
-    }catch(e){box.innerHTML='<p class="support-note">Booking history is temporarily unavailable.</p>';}
+    try{var rows=await getCustomerBookingRows();box.innerHTML=rows.length?'<p class="support-note">You have '+rows.length+' booking request'+(rows.length===1?'':'s')+'. Tap <b>View History</b> to see all details and status.</p>':'<p class="support-note">No bookings found yet. Your bookings will appear here after you make a booking.</p>';}catch(e){console.warn('Booking history load failed',e);box.innerHTML='<p class="support-note">Booking history is temporarily unavailable.</p>';}
   }
+  (function(){
+    var btn=document.getElementById('viewHistoryBtn'),overlay=document.getElementById('historyOverlay'),close=document.getElementById('historyClose'),box=document.getElementById('historyModalList');
+    async function openHistory(){
+      if(!overlay||!box)return;
+      var fb=window.ayanFirebase;
+      if(!(fb&&fb.ready&&fb.auth.currentUser)){box.innerHTML='<div class="history-empty">Please sign in first to view your booking history.</div>';overlay.classList.add('show');return;}
+      overlay.classList.add('show');box.innerHTML='<div class="history-empty">Loading your booking history...</div>';
+      try{var rows=await getCustomerBookingRows();renderHistoryRows(rows,box);}catch(e){console.warn('History modal load failed',e);box.innerHTML='<div class="history-empty">Could not load your history right now. Please try again.</div>';}
+    }
+    function closeHistory(){if(overlay)overlay.classList.remove('show');}
+    if(btn)btn.addEventListener('click',openHistory);
+    if(close)close.addEventListener('click',closeHistory);
+    if(overlay)overlay.addEventListener('click',function(e){if(e.target===overlay)closeHistory();});
+    window.ayanOpenBookingHistory=openHistory;
+  })();
   async function loadReviews(){
     var box=document.getElementById('reviewList'); if(!box)return; var fb=window.ayanFirebase;
     if(!(fb&&fb.ready)){box.innerHTML='<p class="support-note">Reviews will load when Firebase is ready.</p>';return;}
@@ -1514,6 +1629,10 @@ document.addEventListener("DOMContentLoaded", function(){
   }
   window.addEventListener('ayanFirebaseReady',function(){setTimeout(function(){loadBookingHistory();loadReviews();loadOwnerBookings();},300);});
   if(window.ayanFirebase&&window.ayanFirebase.ready){setTimeout(function(){loadBookingHistory();loadReviews();loadOwnerBookings();},300);}
+  window.addEventListener('ayanFirebaseReady',function(){
+    var f=window.ayanFirebase;
+    if(f&&f.ready&&f.onAuthStateChanged) f.onAuthStateChanged(f.auth,function(){setTimeout(loadBookingHistory,250);});
+  });
 
   /* ---------- settings: separate Travel Settings and Privacy ---------- */
   (function(){
@@ -2618,7 +2737,11 @@ document.addEventListener("DOMContentLoaded", function(){
  ];
  function wa(phone,text){return 'https://wa.me/'+phone.replace(/\D/g,'')+'?text='+encodeURIComponent(text)}
  function openAdmin(){overlay.classList.add('show'); refreshAdmin();}
- document.getElementById('adminClose').onclick=()=>overlay.classList.remove('show');
+ window.openAdmin=openAdmin;
+ window.refreshAdmin=refreshAdmin;
+ const adminCloseBtn=document.getElementById('adminClose');
+ if(adminCloseBtn){adminCloseBtn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();overlay.classList.remove('show');});}
+ overlay.addEventListener('click',function(e){if(e.target===overlay)overlay.classList.remove('show');});
  const ownerLoginForm=document.getElementById('ownerDashboardLoginForm');
  if(ownerLoginForm){
    ownerLoginForm.addEventListener('submit', async function(e){
@@ -2640,10 +2763,16 @@ document.addEventListener("DOMContentLoaded", function(){
      msg.textContent='Signing in…';
      msg.style.color='';
      try{
-       await fb.signInWithEmailAndPassword(fb.auth,email,password);
-       msg.textContent='✅ Owner verified. Opening Dashboard…';
+       const cred=await fb.signInWithEmailAndPassword(fb.auth,email,password);
+       if(!cred || !cred.user || (cred.user.email||'').toLowerCase()!==OWNER_EMAIL.toLowerCase()) throw new Error('Owner account verification failed.');
+       const gate=document.getElementById('authGate');
+       if(gate) gate.style.setProperty('display','none','important');
+       overlay.classList.add('show');
+       loginArea.style.display='none';
+       panel.style.display='block';
+       msg.textContent='✅ Owner verified. Dashboard opened.';
        msg.style.color='#087f5b';
-       window.dispatchEvent(new Event('ayanOwnerLoginSuccess'));
+       refreshAdmin();
      }catch(err){
        console.error(err);
        msg.textContent=(err && err.code==='auth/invalid-credential')
@@ -2747,117 +2876,31 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
 
-<script id="ayan-owner-dashboard-final-fix">
-document.addEventListener('DOMContentLoaded', function(){
+<script id="ayan-owner-dashboard-stable-fix">
+document.addEventListener('DOMContentLoaded',function(){
   const OWNER='ayankhan4780@gmail.com';
-  function ownerIsSignedIn(){
-    const fb=window.ayanFirebase;
-    const u=fb && fb.auth && fb.auth.currentUser;
-    return !!(u && (u.email||'').toLowerCase()===OWNER);
-  }
-  function keepOwnerInsideApp(){
-    if(!ownerIsSignedIn()) return;
-    const gate=document.getElementById('authGate');
-    const pill=document.getElementById('accountPill');
-    if(gate) gate.style.display='none';
-    if(pill) pill.classList.add('show');
-    const email=document.getElementById('accountEmail');
-    if(email) email.textContent='Owner';
-  }
-  function showDashboard(){
-    keepOwnerInsideApp();
-    const overlay=document.getElementById('adminOverlay');
-    const login=document.getElementById('adminLoginArea');
-    const panel=document.getElementById('adminPanel');
-    if(overlay) overlay.classList.add('show');
-    if(ownerIsSignedIn()){
-      if(login) login.style.display='none';
-      if(panel) panel.style.display='block';
-      if(typeof refreshAdmin==='function') refreshAdmin();
-    }
-  }
-
-  window.addEventListener('ayanFirebaseReady', function(){
-    const fb=window.ayanFirebase;
-    if(fb && fb.ready && fb.onAuthStateChanged){
-      fb.onAuthStateChanged(fb.auth,function(user){
-        if(user && (user.email||'').toLowerCase()===OWNER){
-          keepOwnerInsideApp();
-          const login=document.getElementById('adminLoginArea');
-          const panel=document.getElementById('adminPanel');
-          if(login) login.style.display='none';
-          if(panel) panel.style.display='block';
-          if(typeof refreshAdmin==='function') refreshAdmin();
-        }
-      });
-    }
-  });
-
+  const overlay=document.getElementById('adminOverlay');
+  const login=document.getElementById('adminLoginArea');
+  const panel=document.getElementById('adminPanel');
+  const gate=document.getElementById('authGate');
   const form=document.getElementById('ownerDashboardLoginForm');
-  if(form){
-    form.addEventListener('submit',function(){
-      setTimeout(keepOwnerInsideApp,300);
-      setTimeout(function(){
-        if(ownerIsSignedIn()) showDashboard();
-      },900);
-    },false);
-  }
-});
-</script>
-<script id="ayan-owner-auth-hard-fix">
-(function(){
-  const OWNER='ayankhan4780@gmail.com';
-  let ownerPending=false;
-  const isOwner=()=>{const f=window.ayanFirebase,u=f&&f.auth&&f.auth.currentUser;return !!(u&&String(u.email||'').toLowerCase()===OWNER);};
-  const hideGate=()=>{const g=document.getElementById('authGate');if(g)g.style.setProperty('display','none','important');const p=document.getElementById('accountPill');if(p)p.classList.add('show');};
-  const showOwnerPanel=()=>{const o=document.getElementById('adminOverlay'),l=document.getElementById('adminLoginArea'),p=document.getElementById('adminPanel');if(o)o.classList.add('show');if(l)l.style.display='none';if(p)p.style.display='block';};
-  function bind(){
-    const form=document.getElementById('ownerDashboardLoginForm');
-    if(form && !form.dataset.hardBound){
-      form.dataset.hardBound='1';
-      form.addEventListener('submit',async function(e){
-        e.preventDefault(); e.stopImmediatePropagation();
-        const email=document.getElementById('ownerDashboardEmail').value.trim().toLowerCase();
-        const pass=document.getElementById('ownerDashboardPassword').value;
-        const msg=document.getElementById('ownerDashboardLoginMsg');
-        if(email!==OWNER){msg.textContent='Access denied: owner account only.';return;}
-        const fb=window.ayanFirebase;
-        if(!fb||!fb.ready){msg.textContent='Firebase is loading. Try again in a moment.';return;}
-        ownerPending=true; msg.textContent='Signing in…';
-        try{
-          await fb.signInWithEmailAndPassword(fb.auth,email,pass);
-          await new Promise((resolve,reject)=>{
-            let done=false;
-            const unsub=fb.onAuthStateChanged(fb.auth,function(u){
-              if(done)return;
-              if(u && String(u.email||'').toLowerCase()===OWNER){done=true;unsub&&unsub();resolve(u);}
-            });
-            setTimeout(()=>{if(!done){done=true;unsub&&unsub();reject(new Error('auth-timeout'));}},7000);
-          });
-          ownerPending=false; hideGate(); showOwnerPanel();
-          msg.textContent='✅ Owner verified.';
-          if(typeof refreshAdmin==='function') refreshAdmin();
-        }catch(err){
-          ownerPending=false;
-          msg.textContent=(err&&err.code==='auth/invalid-credential')?'❌ Incorrect owner email or password.':'❌ '+(err&&err.message?err.message:'Could not sign in.');
-        }
-      },true);
+  const email=document.getElementById('ownerDashboardEmail');
+  if(email) email.value=OWNER;
+  function sync(){
+    const fb=window.ayanFirebase, u=fb&&fb.auth&&fb.auth.currentUser;
+    if(u && String(u.email||'').toLowerCase()===OWNER){
+      if(gate) gate.style.setProperty('display','none','important');
+      if(overlay && overlay.classList.contains('show')){ if(login)login.style.display='none'; if(panel)panel.style.display='block'; }
     }
+  }
+  window.addEventListener('ayanFirebaseReady',function(){
     const fb=window.ayanFirebase;
-    if(fb&&fb.ready&&fb.onAuthStateChanged&&!fb.__ownerHardListener){
-      fb.__ownerHardListener=true;
-      fb.onAuthStateChanged(fb.auth,function(u){
-        if(u && String(u.email||'').toLowerCase()===OWNER){hideGate();}
-      });
-    }
-  }
-  document.addEventListener('DOMContentLoaded',bind);
-  window.addEventListener('ayanFirebaseReady',bind);
-  setTimeout(bind,1000);
-  setTimeout(bind,2500);
-  const obs=new MutationObserver(function(){if(isOwner()||ownerPending)hideGate();});
-  document.addEventListener('DOMContentLoaded',function(){const g=document.getElementById('authGate');if(g)obs.observe(g,{attributes:true,attributeFilter:['style','class']});});
-})();
+    if(fb&&fb.ready&&fb.onAuthStateChanged) fb.onAuthStateChanged(fb.auth,sync);
+    setTimeout(sync,100);
+  });
+  setTimeout(sync,800);
+  if(form){form.addEventListener('submit',function(){setTimeout(sync,1200);},false);}
+});
 </script>
 
 <script id="ayan-business-booking-sync">
@@ -2906,5 +2949,536 @@ document.addEventListener('DOMContentLoaded', function(){
   });
 })();
 </script>
+
+<script id="ayan-owner-dashboard-management-v1">
+(function(){
+  const OWNER='ayankhan4780@gmail.com';
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+
+  let timer=null;
+  let lastPending=0;
+
+  function isOwner(){
+    const f=window.ayanFirebase,u=f&&f.auth&&f.auth.currentUser;
+    return !!(u && String(u.email||'').toLowerCase()===OWNER);
+  }
+
+  function findBox(){
+    return $('adminRequests') || document.querySelector('[id*="adminRequests" i]');
+  }
+
+  function injectToolbar(){
+    const box=findBox();
+    if(!box || $('ayanOwnerToolbar')) return;
+
+    const wrap=document.createElement('div');
+    wrap.id='ayanOwnerToolbar';
+    wrap.style.cssText='margin:12px 0;padding:12px;border:1px solid rgba(255,255,255,.18);border-radius:16px;backdrop-filter:blur(8px);';
+
+    wrap.innerHTML=`
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px">
+        <div style="padding:10px;border-radius:12px;background:rgba(255,255,255,.08)"><small>Total</small><br><b id="ownerStatTotal">0</b></div>
+        <div style="padding:10px;border-radius:12px;background:rgba(255,193,7,.13)"><small>Pending</small><br><b id="ownerStatPending">0</b></div>
+        <div style="padding:10px;border-radius:12px;background:rgba(34,197,94,.13)"><small>Accepted</small><br><b id="ownerStatAccepted">0</b></div>
+        <div style="padding:10px;border-radius:12px;background:rgba(239,68,68,.13)"><small>Rejected</small><br><b id="ownerStatRejected">0</b></div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <select id="ownerRequestType" style="flex:1;min-width:130px;padding:9px;border-radius:10px">
+          <option value="all">All Requests</option>
+          <option value="Hotel">Hotels</option>
+          <option value="Vehicle">Vehicles</option>
+          <option value="Package">Packages</option>
+        </select>
+        <select id="ownerRequestStatus" style="flex:1;min-width:130px;padding:9px;border-radius:10px">
+          <option value="all">All Status</option>
+          <option value="Pending">Pending</option>
+          <option value="Accepted">Accepted</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+        <button id="ownerRefreshRequests" type="button" class="assign">🔄 Refresh</button>
+      </div>
+      <div id="ownerNewRequestNotice" style="display:none;margin-top:9px;padding:9px;border-radius:10px;font-weight:700"></div>
+    `;
+    box.parentNode.insertBefore(wrap,box);
+
+    $('ownerRequestType').addEventListener('change',renderFiltered);
+    $('ownerRequestStatus').addEventListener('change',renderFiltered);
+    $('ownerRefreshRequests').addEventListener('click',load);
+  }
+
+  function classify(x){
+    return String(x.requestKind || (x.hotel?'Hotel':(x.type==='package'?'Package':((x.type==='vehicle'||x.type==='rental')?'Vehicle':'Booking'))));
+  }
+
+  function statusOf(x){ return String(x.status||'Pending'); }
+
+  function renderFiltered(){
+    const records=window.__ayanManagementRecords||[];
+    const type=$('ownerRequestType')?.value||'all';
+    const status=$('ownerRequestStatus')?.value||'all';
+    const filtered=records.filter(x=>(type==='all'||classify(x)===type)&&(status==='all'||statusOf(x)===status));
+    const box=findBox();
+    if(!box)return;
+
+    if(!filtered.length){
+      box.innerHTML='<div class="admin-muted">No requests match this filter.</div>';
+      return;
+    }
+
+    box.innerHTML=filtered.map((x,i)=>{
+      const kind=classify(x), st=statusOf(x);
+      const item=x.hotel||x.choice||x.packageName||'Booking Request';
+      const date=x.date||x.checkIn||x.bookingDate||'';
+      const people=x.people||x.guests||x.persons||'';
+      const price=x.price||x.total||x.totalPrice||x.amount||'';
+      return `<div class="admin-card" style="margin-top:10px">
+        <div class="admin-row">
+          <strong>${esc(kind)} — ${esc(item)}</strong>
+          <span class="driver-status ${st==='Rejected'?'busy':''}">${esc(st)}</span>
+        </div>
+        <div class="admin-muted">
+          <b>Customer:</b> ${esc(x.name||x.customerName||'')}<br>
+          <b>Email:</b> ${esc(x.email||x.customerEmail||'')}<br>
+          <b>Phone:</b> ${esc(x.phone||x.customerPhone||'')}<br>
+          ${date?'<b>Date:</b> '+esc(date)+(x.checkOut?' → '+esc(x.checkOut):'')+'<br>':''}
+          ${people?'<b>People:</b> '+esc(people)+'<br>':''}
+          ${x.place?'<b>Destination:</b> '+esc(x.place)+'<br>':''}
+          ${price?'<b>Price:</b> PKR '+esc(price)+'<br>':''}
+          ${x.payment?'<b>Payment:</b> '+esc(x.payment)+'<br>':''}
+          ${x.transactionId||x.easypaisaTxn?'<b>Transaction ID:</b> '+esc(x.transactionId||x.easypaisaTxn)+'<br>':''}
+          ${x.message?'<b>Details:</b> '+esc(x.message)+'<br>':''}
+          ${x.createdAt?'<small>Received: '+esc(new Date(x.createdAt).toLocaleString())+'</small>':''}
+        </div>
+        <div class="admin-actions" style="margin-top:9px">
+          <button class="approve" type="button" data-mg="accept" data-i="${i}">✓ Accept</button>
+          <button class="reject" type="button" data-mg="reject" data-i="${i}">✕ Reject</button>
+          <button class="assign" type="button" data-mg="pending" data-i="${i}">🟡 Pending</button>
+          <button class="reject" type="button" data-mg="delete" data-i="${i}">🗑 Delete</button>
+          ${x.phone?`<button class="assign" type="button" data-mg="wa" data-i="${i}">💬 WhatsApp</button>`:''}
+        </div>
+      </div>`;
+    }).join('');
+
+    box.querySelectorAll('[data-mg]').forEach(btn=>btn.addEventListener('click',async()=>{
+      const idx=Number(btn.dataset.i);
+      const x=filtered[idx];
+      const act=btn.dataset.mg;
+      if(act==='wa'){
+        const n=String(x.phone||x.customerPhone||'').replace(/\D/g,'');
+        if(n)window.open('https://wa.me/'+n+'?text='+encodeURIComponent('Ayan Travels update: your '+classify(x).toLowerCase()+' request is currently '+statusOf(x)+'.'),'_blank');
+        return;
+      }
+      if(!isOwner())return alert('Owner login required.');
+      try{
+        const {ref,update,remove}=await import('https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js');
+        const path='bookings/'+x._uid+'/'+x._id;
+        if(act==='delete'){
+          if(!confirm('Delete this request permanently?'))return;
+          await remove(ref(window.ayanFirebase.db,path));
+        }else{
+          const s=act==='accept'?'Accepted':act==='reject'?'Rejected':'Pending';
+          await update(ref(window.ayanFirebase.db,path),{status:s,updatedAt:new Date().toISOString(),verifiedBy:OWNER});
+        }
+        await load();
+      }catch(e){
+        console.error(e);
+        alert('Could not update this request. Check Firebase Rules/connection.');
+      }
+    }));
+  }
+
+  async function load(){
+    if(!isOwner())return;
+    const f=window.ayanFirebase;
+    if(!f||!f.db)return;
+    injectToolbar();
+    try{
+      const {get,ref}=await import('https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js');
+      const snap=await get(ref(f.db,'bookings'));
+      const users=snap.exists()?snap.val():{};
+      const records=[];
+      Object.keys(users||{}).forEach(uid=>{
+        Object.keys(users[uid]||{}).forEach(id=>{
+          const x=users[uid][id]||{};
+          records.push({...x,_uid:uid,_id:id});
+        });
+      });
+      records.sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
+      window.__ayanManagementRecords=records;
+
+      const pending=records.filter(x=>statusOf(x)==='Pending').length;
+      const accepted=records.filter(x=>statusOf(x)==='Accepted').length;
+      const rejected=records.filter(x=>statusOf(x)==='Rejected').length;
+      if($('ownerStatTotal'))$('ownerStatTotal').textContent=records.length;
+      if($('ownerStatPending'))$('ownerStatPending').textContent=pending;
+      if($('ownerStatAccepted'))$('ownerStatAccepted').textContent=accepted;
+      if($('ownerStatRejected'))$('ownerStatRejected').textContent=rejected;
+
+      const notice=$('ownerNewRequestNotice');
+      if(notice){
+        if(pending>lastPending){
+          notice.style.display='block';
+          notice.textContent='🔔 New booking request received!';
+        }else if(pending===0){
+          notice.style.display='none';
+        }
+      }
+      lastPending=pending;
+      renderFiltered();
+    }catch(e){console.warn('Owner dashboard management:',e);}
+  }
+
+  function start(){
+    injectToolbar();
+    if(timer)clearInterval(timer);
+    timer=setInterval(()=>{
+      const overlay=$('adminOverlay');
+      if(isOwner() && overlay && (overlay.classList.contains('show')||overlay.style.display==='flex'))load();
+    },10000);
+    setTimeout(load,700);
+  }
+
+  window.ayanOwnerDashboardManagement={load,start};
+  document.addEventListener('DOMContentLoaded',start);
+  window.addEventListener('ayanFirebaseReady',()=>setTimeout(start,500));
+})();
+</script>
+
+
+<script id="ayan-customer-notifications-cancel-v1">
+(function(){
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  let lastSnapshot={};
+
+  function currentUser(){
+    const f=window.ayanFirebase;
+    return f&&f.auth&&f.auth.currentUser;
+  }
+
+  async function loadCustomerUpdates(){
+    const f=window.ayanFirebase,u=currentUser();
+    if(!f||!f.db||!u)return;
+
+    try{
+      const {get,ref,update}=await import('https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js');
+      const snap=await get(ref(f.db,'bookings/'+u.uid));
+      const data=snap.exists()?snap.val():{};
+      const records=Object.entries(data).map(([id,x])=>({...x,_id:id})); window.__ayanCustomerHistoryRecords=records;
+      records.sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
+
+      // Keep a small notification count in the customer profile.
+      const changed=records.filter(x=>{
+        const key=x._id+':'+String(x.status||'Pending')+':'+String(x.updatedAt||'');
+        return x.updatedAt && lastSnapshot[x._id] && lastSnapshot[x._id]!==key;
+      });
+
+      const accepted=records.filter(x=>String(x.status)==='Accepted').length;
+      const rejected=records.filter(x=>String(x.status)==='Rejected').length;
+      const pending=records.filter(x=>String(x.status)==='Pending').length;
+
+      let notice=$('ayanCustomerNotice');
+      if(!notice){
+        notice=document.createElement('div');
+        notice.id='ayanCustomerNotice';
+        notice.style.cssText='position:fixed;left:14px;right:14px;bottom:18px;z-index:99999;display:none;padding:14px 16px;border-radius:16px;background:rgba(20,20,30,.95);color:#fff;box-shadow:0 8px 30px rgba(0,0,0,.3);';
+        document.body.appendChild(notice);
+      }
+
+      if(changed.length){
+        const x=changed[0], st=x.status||'Pending';
+        const item=x.hotel||x.choice||x.packageName||'your booking';
+        notice.innerHTML=`<b>🔔 Booking Update</b><br>${esc(item)} — <strong>${esc(st)}</strong>`;
+        notice.style.display='block';
+        setTimeout(()=>{notice.style.display='none';},6000);
+      }
+
+      records.forEach(x=>{
+        lastSnapshot[x._id]=x._id+':'+String(x.status||'Pending')+':'+String(x.updatedAt||'');
+      });
+
+      // Add/update a lightweight notification summary if Profile has a history area.
+      const history=$('bookingHistory')||$('profileHistory');
+      if(history && records.length){
+        let summary=$('ayanCustomerStatusSummary');
+        if(!summary){
+          summary=document.createElement('div');
+          summary.id='ayanCustomerStatusSummary';
+          summary.style.cssText='margin:10px 0;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.08);';
+          history.parentNode.insertBefore(summary,history);
+        }
+        summary.innerHTML=`🔔 <b>Booking updates:</b> ${pending} Pending · ${accepted} Accepted · ${rejected} Rejected`;
+      }
+    }catch(e){console.warn('Customer updates:',e);}
+  }
+
+  async function cancelBooking(id){
+    const f=window.ayanFirebase,u=currentUser();
+    if(!f||!f.db||!u||!id)return;
+    if(!confirm('Cancel this pending booking request?'))return;
+    try{
+      const {ref,update}=await import('https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js');
+      await update(ref(f.db,'bookings/'+u.uid+'/'+id),{
+        status:'Cancelled',
+        cancelledAt:new Date().toISOString()
+      });
+      await loadCustomerUpdates();
+      if(window.ayanLoadBookingHistory)window.ayanLoadBookingHistory();
+    }catch(e){
+      console.error(e);
+      alert('Could not cancel this booking. Please try again.');
+    }
+  }
+
+  // Expose cancellation for any existing/new history card.
+  window.ayanCancelBooking=cancelBooking;
+  window.ayanLoadCustomerUpdates=loadCustomerUpdates;
+
+  window.addEventListener('ayanFirebaseReady',()=>setTimeout(loadCustomerUpdates,800));
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(loadCustomerUpdates,1600));
+  setInterval(loadCustomerUpdates,10000);
+})();
+</script>
+
+
+<script id="ayan-history-cancel-button-v1">
+(function(){
+  function addCancelButtons(){
+    const host=document.getElementById('bookingHistory')||document.getElementById('profileHistory');
+    if(!host)return;
+    host.querySelectorAll('.admin-card').forEach(card=>{
+      if(card.querySelector('[data-cancel-booking]'))return;
+      const text=card.textContent||'';
+      if(!/Pending/i.test(text))return;
+      const status=card.querySelector('.driver-status');
+      if(status && String(status.textContent).trim()!=='Pending')return;
+
+      // Recover the corresponding record by matching the card's visible item.
+      const records=window.__ayanCustomerHistoryRecords||[];
+      const match=records.find(x=>{
+        const item=x.hotel||x.choice||x.packageName||'Booking';
+        return text.includes(String(item));
+      });
+      if(!match)return;
+
+      const btn=document.createElement('button');
+      btn.type='button';
+      btn.dataset.cancelBooking='1';
+      btn.className='reject';
+      btn.textContent='Cancel Request';
+      btn.style.marginTop='8px';
+      btn.onclick=()=>window.ayanCancelBooking&&window.ayanCancelBooking(match._id);
+      card.appendChild(btn);
+    });
+  }
+
+  const old=window.ayanLoadBookingHistory;
+  if(old && !old.__wrapped){
+    const wrapped=async function(){
+      const r=await old.apply(this,arguments);
+      setTimeout(addCancelButtons,100);
+      return r;
+    };
+    wrapped.__wrapped=true;
+    window.ayanLoadBookingHistory=wrapped;
+  }
+
+  document.addEventListener('DOMContentLoaded',()=>setInterval(addCancelButtons,2000));
+})();
+</script>
+
+
+<script id="ayan-security-payment-verification-v1">
+(function(){
+  const OWNER='ayankhan4780@gmail.com';
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const $=id=>document.getElementById(id);
+
+  function user(){return window.ayanFirebase?.auth?.currentUser||null;}
+  function owner(){return String(user()?.email||'').toLowerCase()===OWNER;}
+
+  async function verifyPayment(id, verified){
+    if(!owner()) return alert('Owner access required.');
+    const f=window.ayanFirebase;
+    try{
+      const {ref,update}=await import('https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js');
+      await update(ref(f.db,'bookings/'+id._uid+'/'+id._id),{
+        paymentStatus:verified?'Verified':'Unverified',
+        paymentVerified:verified,
+        paymentVerifiedAt:new Date().toISOString(),
+        paymentVerifiedBy:OWNER
+      });
+      if(window.ayanOwnerDashboardManagement?.load) await window.ayanOwnerDashboardManagement.load();
+      else if(window.ayanRepairDashboard?.open) await window.ayanRepairDashboard.open();
+    }catch(e){
+      console.error(e);
+      alert('Payment verification failed. Please check Firebase Rules.');
+    }
+  }
+
+  function addPaymentControls(){
+    if(!owner())return;
+    const records=window.__ayanManagementRecords||window.__ayanAdminRecords||[];
+    document.querySelectorAll('.admin-card').forEach(card=>{
+      if(card.querySelector('[data-payment-verification]'))return;
+      const text=card.textContent||'';
+      const match=records.find(x=>{
+        const item=x.hotel||x.choice||x.packageName||'Booking Request';
+        return text.includes(String(item)) &&
+          text.includes(String(x.email||x.customerEmail||''));
+      });
+      if(!match)return;
+
+      const hasPayment=match.payment || match.transactionId || match.easypaisaTxn || match.paymentStatus;
+      if(!hasPayment)return;
+
+      const row=document.createElement('div');
+      row.dataset.paymentVerification='1';
+      row.style.cssText='margin-top:9px;padding:9px;border-radius:10px;border:1px solid rgba(255,255,255,.14)';
+      const status=String(match.paymentStatus||'Unverified');
+      row.innerHTML=`<b>💳 Payment:</b> ${esc(match.payment||'Not specified')} 
+        ${match.transactionId||match.easypaisaTxn?'<br><b>Transaction:</b> '+esc(match.transactionId||match.easypaisaTxn):''}
+        <br><b>Status:</b> ${esc(status)}
+        <div style="display:flex;gap:7px;margin-top:7px">
+          <button type="button" class="approve" data-pv="yes">✓ Verify Payment</button>
+          <button type="button" class="reject" data-pv="no">✕ Mark Unverified</button>
+        </div>`;
+      card.appendChild(row);
+      row.querySelector('[data-pv="yes"]').onclick=()=>verifyPayment(match,true);
+      row.querySelector('[data-pv="no"]').onclick=()=>verifyPayment(match,false);
+    });
+  }
+
+  // UI-level protection: never render customer history until a Firebase user
+  // exists, and scope customer reads to that user's own UID.
+  async function customerSecurityCheck(){
+    const f=window.ayanFirebase,u=user();
+    const host=$('bookingHistory')||$('profileHistory');
+    if(!host)return;
+    if(!u){
+      host.innerHTML='<div class="admin-muted">Please sign in to view your own booking history.</div>';
+      return;
+    }
+    if(window.ayanLoadBookingHistory) {
+      try{ await window.ayanLoadBookingHistory(); }catch(e){ console.warn(e); }
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded',()=>{
+    setTimeout(customerSecurityCheck,1200);
+    setTimeout(addPaymentControls,1800);
+  });
+  window.addEventListener('ayanFirebaseReady',()=>{
+    setTimeout(customerSecurityCheck,600);
+    setTimeout(addPaymentControls,1200);
+  });
+  setInterval(()=>{
+    if(owner())addPaymentControls();
+    else customerSecurityCheck();
+  },5000);
+})();
+</script>
+
+
+<script id="ayan-search-receipt-v1">
+(function(){
+  const OWNER='ayankhan4780@gmail.com';
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const $=id=>document.getElementById(id);
+  const typeOf=x=>String(x.requestKind||(x.hotel?'Hotel':x.type==='package'?'Package':(x.type==='vehicle'||x.type==='rental'?'Vehicle':'Booking')));
+  const statusOf=x=>String(x.status||'Pending');
+  const itemOf=x=>String(x.hotel||x.choice||x.packageName||x.vehicle||'Booking');
+
+  function inject(){
+    const box=$('adminRequests')||document.querySelector('[id*="adminRequests" i]');
+    if(box && !$('ayanOwnerSearch')){
+      const bar=document.createElement('div');
+      bar.id='ayanOwnerSearch';
+      bar.style.cssText='margin:10px 0;padding:10px;border:1px solid rgba(255,255,255,.15);border-radius:14px;display:flex;gap:8px;flex-wrap:wrap';
+      bar.innerHTML='<input id="ayanReqSearch" placeholder="Search customer, email, hotel, vehicle or package" style="flex:1;min-width:190px;padding:10px;border-radius:10px"><button id="ayanReqSearchBtn" type="button" class="assign">🔎 Search</button>';
+      box.parentNode.insertBefore(bar,box);
+      $('ayanReqSearch').addEventListener('input',render);
+      $('ayanReqSearchBtn').addEventListener('click',render);
+    }
+  }
+
+  function render(){
+    const box=$('adminRequests'), records=window.__ayanManagementRecords||[];
+    if(!box)return;
+    const q=String($('ayanReqSearch')?.value||'').trim().toLowerCase();
+    if(!q)return;
+    const filtered=records.filter(x=>{
+      const s=[x.name,x.customerName,x.email,x.customerEmail,x.phone,x.hotel,x.choice,x.packageName,x.vehicle,x.place,typeOf(x),statusOf(x)].join(' ').toLowerCase();
+      return s.includes(q);
+    });
+    if(!filtered.length){box.innerHTML='<div class="admin-muted">No matching requests found.</div>';return;}
+    // Reuse the existing dashboard rendering when available by temporarily
+    // narrowing the management array.
+    const old=window.__ayanManagementRecords;
+    window.__ayanManagementRecords=filtered;
+    const fn=window.ayanOwnerDashboardManagement?.load;
+    if(fn){ /* data remains available for the existing dashboard */ }
+    box.innerHTML=filtered.map((x,i)=>`
+      <div class="admin-card" style="margin-top:10px">
+        <div class="admin-row"><strong>${esc(typeOf(x))} — ${esc(itemOf(x))}</strong><span class="driver-status ${statusOf(x)==='Rejected'?'busy':''}">${esc(statusOf(x))}</span></div>
+        <div class="admin-muted">
+          <b>Customer:</b> ${esc(x.name||x.customerName)}<br>
+          <b>Email:</b> ${esc(x.email||x.customerEmail)}<br>
+          ${x.phone?'<b>Phone:</b> '+esc(x.phone)+'<br>':''}
+          ${x.place?'<b>Destination:</b> '+esc(x.place)+'<br>':''}
+          ${x.date||x.checkIn?'<b>Date:</b> '+esc(x.date||x.checkIn)+(x.checkOut?' → '+esc(x.checkOut):'')+'<br>':''}
+          ${x.total||x.totalPrice||x.price?'<b>Total:</b> PKR '+esc(x.total||x.totalPrice||x.price)+'<br>':''}
+        </div>
+        <div class="admin-actions" style="margin-top:8px">
+          <button class="approve" type="button" data-search-receipt="${i}">🧾 Receipt</button>
+        </div>
+      </div>`).join('');
+    window.__ayanManagementRecords=old;
+    box.querySelectorAll('[data-search-receipt]').forEach(b=>b.onclick=()=>{
+      const x=filtered[Number(b.dataset.searchReceipt)];
+      receipt(x);
+    });
+  }
+
+  function receipt(x){
+    let modal=$('ayanReceiptModal');
+    if(!modal){
+      modal=document.createElement('div');
+      modal.id='ayanReceiptModal';
+      modal.style.cssText='position:fixed;inset:0;z-index:100000;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:16px';
+      document.body.appendChild(modal);
+    }
+    modal.innerHTML=`<div style="max-width:520px;width:100%;max-height:90vh;overflow:auto;background:#fff;color:#111;border-radius:20px;padding:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">Ayan Travels</h2><button id="ayanReceiptClose" type="button" style="font-size:24px;border:0;background:none">×</button></div>
+      <p style="margin:4px 0 16px"><b>Booking Receipt</b></p>
+      <hr>
+      <p><b>Type:</b> ${esc(typeOf(x))}</p>
+      <p><b>Service:</b> ${esc(itemOf(x))}</p>
+      <p><b>Customer:</b> ${esc(x.name||x.customerName||'')}</p>
+      <p><b>Email:</b> ${esc(x.email||x.customerEmail||'')}</p>
+      <p><b>Phone:</b> ${esc(x.phone||x.customerPhone||'')}</p>
+      ${x.place?'<p><b>Destination:</b> '+esc(x.place)+'</p>':''}
+      ${x.date||x.checkIn?'<p><b>Date:</b> '+esc(x.date||x.checkIn)+(x.checkOut?' → '+esc(x.checkOut):'')+'</p>':''}
+      ${x.people||x.guests?'<p><b>Guests:</b> '+esc(x.people||x.guests)+'</p>':''}
+      ${x.total||x.totalPrice||x.price?'<p><b>Total:</b> PKR '+esc(x.total||x.totalPrice||x.price)+'</p>':''}
+      ${x.payment?'<p><b>Payment:</b> '+esc(x.payment)+'</p>':''}
+      ${x.transactionId||x.easypaisaTxn?'<p><b>Transaction ID:</b> '+esc(x.transactionId||x.easypaisaTxn)+'</p>':''}
+      <p><b>Booking Status:</b> ${esc(statusOf(x))}</p>
+      ${x.paymentStatus?'<p><b>Payment Status:</b> '+esc(x.paymentStatus)+'</p>':''}
+      <p><small>Generated by Ayan Travels</small></p>
+      <button id="ayanReceiptPrint" type="button" style="width:100%;padding:11px;border:0;border-radius:10px">🖨 Print Receipt</button>
+    </div>`;
+    modal.style.display='flex';
+    $('ayanReceiptClose').onclick=()=>modal.style.display='none';
+    $('ayanReceiptPrint').onclick=()=>window.print();
+  }
+
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(inject,1600));
+  window.addEventListener('ayanFirebaseReady',()=>setTimeout(inject,700));
+  setInterval(inject,4000);
+})();
+</script>
+
 </body>
 </html>
